@@ -27,7 +27,7 @@ function dvt_activate_plugin() {
 /**
  * Load plugin text domain
  *
- * @since 1.0.0
+ * @since 1.0.2
  */
 function dvt_load_plugin_textdomain() {
     load_plugin_textdomain( 'dev-tasks-up', false, '/'.DVT_STARTER_PLUGIN.'/languages/' );
