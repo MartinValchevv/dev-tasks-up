@@ -4,10 +4,10 @@ if (!defined('ABSPATH')) exit;
 /**
  * Plugin Name: DevtasksUp
  * Plugin URI:
- * Description: DevtasksUp - submission of tasks from clients to developers as integrated with ClickUp. Customers will be able to submit tasks and bugs through a form in the plugin as well as through a widget in the WordPress dashboard. They will be able to track all tasks for their site, what status they are and everything related to a task.
+ * Description: The plugin integrates ClickUp into the admin for streamlined task management. Simply add an API key for full access to create tasks, leave comments, and view task priority. Ideal for developers to set up for clients for seamless task delegation.
  * Author: Martin Valchev
  * Author URI: https://martinvalchev.com/
- * Version: 1.0.0
+ * Version: 1.0.1
  * Text Domain: dev-tasks-up
  * Domain Path: /languages
  * License: GPL v2 - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) exit;
  *
  * @since 1.0.0
  */
-if ( ! defined( 'DVT_VERSION_NUM' ) ) 		define( 'DVT_VERSION_NUM'		, '1.0.0' ); // Plugin version constant
+if ( ! defined( 'DVT_VERSION_NUM' ) ) 		define( 'DVT_VERSION_NUM'		, '1.0.1' ); // Plugin version constant
 if ( ! defined( 'DVT_STARTER_PLUGIN' ) )		define( 'DVT_STARTER_PLUGIN'		, trim( dirname( plugin_basename( __FILE__ ) ), '/' ) ); // Name of the plugin folder eg - 'dev-tasks-up'
 if ( ! defined( 'DVT_STARTER_PLUGIN_DIR' ) )	define( 'DVT_STARTER_PLUGIN_DIR'	, plugin_dir_path( __FILE__ ) ); // Plugin directory absolute path with the trailing slash. Useful for using with includes eg - /var/www/html/wp-content/plugins/dev-tasks-up/
 if ( ! defined( 'DVT_STARTER_PLUGIN_URL' ) )	define( 'DVT_STARTER_PLUGIN_URL'	, plugin_dir_url( __FILE__ ) ); // URL to the plugin folder with the trailing slash. Useful for referencing src eg - http://localhost/wp/wp-content/plugins/dev-tasks-up/
@@ -35,7 +35,7 @@ class DevTasksIntegration
     /**
      * Construct
      *
-     * @since 1.0.0
+     * @since 1.0.1
      */
     public function __construct()
     {
@@ -47,6 +47,7 @@ class DevTasksIntegration
         add_action('dev_task_up_inNewWorkspaceCreateFolder', array($this, 'inNewWorkspaceCreateFolder'));
         add_action('dev_task_up_inNewWorkspaceFolderCreateList', array($this, 'inNewWorkspaceFolderCreateList'));
         add_action('dev_task_up_getWorkspaces', array($this, 'getWorkspaces'));
+        add_action('admin_notices', array($this, 'errorNotices'));
 
         add_action('wp_ajax_select_workspace', array($this, 'selectWorkspace'));
         add_action('wp_ajax_nopriv_select_workspace',  array($this, 'selectWorkspace'));
@@ -102,19 +103,11 @@ class DevTasksIntegration
         include_once 'views/admin-page-settings.php';
     }
 
-//    public function enqueueScripts()
-//    {
-//        wp_enqueue_style('dev-tasks-styles', plugins_url('assets/styles.css', __FILE__));
-//        wp_enqueue_style( 'bootstrap_admin_styles', plugins_url( 'assets/bootstrap-5.2.1/css/bootstrap.min.css', __FILE__ ) );
-//
-//        wp_enqueue_script( 'jquery-js', plugins_url( 'assets/jQuery-3.6.1/jquery-3.6.1.min.js', __FILE__ ) );
-//        wp_enqueue_script( 'bootstrap-js', plugins_url( 'assets/bootstrap-5.2.1/js/bootstrap.bundle.min.js', __FILE__ ) );
-//    }
 
     /**
      * Add Admin scripts and styles
      *
-     * @since 1.0.0
+     * @since 1.0.1
      */
     public function dev_tasks_admin_styles($hook) {
 
@@ -124,11 +117,14 @@ class DevTasksIntegration
            wp_enqueue_style( 'bootstrap_admin_styles', plugins_url( 'assets/bootstrap-5.2.1/css/bootstrap.min.css', __FILE__ ) );
            wp_enqueue_style( 'dev_tasks_admin_fontawesome_styles', plugins_url( 'assets/fontawesome5/css/all.min.css', __FILE__ ) );
            wp_enqueue_style( 'dev_tasks_admin_styles', plugins_url( 'assets/admin-style.css', __FILE__ ) );
+           wp_enqueue_style( 'select2', plugins_url( 'assets/select2/select2.min.css', __FILE__ ) );
 
            wp_enqueue_script( 'bootstrap-admin-js', plugins_url( 'assets/bootstrap-5.2.1/js/bootstrap.bundle.min.js', __FILE__ ) );
            wp_enqueue_script( 'sweetalert2-js', plugins_url( 'assets/sweetalert2/sweetalert2.all.min.js', __FILE__ ) );
            wp_enqueue_script( 'momentjs', includes_url() . '/js/dist/vendor/moment.js', array(), '', true );
            wp_enqueue_script( 'dev-tasks-js', plugins_url( 'assets/js/main.js', __FILE__ ), '', DVT_VERSION_NUM, true );
+           wp_register_script( 'select2', plugin_dir_url( __FILE__ ) . 'assets/select2/select2.min.js', array( 'jquery' ), '', true );
+           wp_enqueue_script( 'select2' );
 
         }
 
@@ -171,7 +167,7 @@ class DevTasksIntegration
     /**
      * Save admin settings
      *
-     * @since 1.0.0
+     * @since 1.0.1
      */
     public function save()
     {
@@ -264,7 +260,7 @@ class DevTasksIntegration
 
             $data['GeneralWorkspace_Id'] = $json_response->teams[0]->id;
 
-            if ($json_response->err) {
+            if (isset($json_response->err)) {
                 $data['API_token_validation'] = 'invalid';
             } else {
                 $data['API_token_validation'] = 'valid';
@@ -368,9 +364,11 @@ class DevTasksIntegration
     /**
      * Create Workspace from settings
      *
-     * @since 1.0.0
+     * @since 1.0.1
      */
     public function createWorkspace ($data) {
+
+        session_start();
 
         $workspace_name = $this->getOption('validationWorkspace-name');
 
@@ -431,14 +429,27 @@ class DevTasksIntegration
         } else {
             $json_response = json_decode( $response['body'], true );
 
-            $data['Workspace_ID'] = $json_response['id']; // Get created Workspace ID
-            $data['show_workspace_name'] = $json_response['name'];
+            if (isset($json_response['err'])) {
+                // Store error in session
+                $_SESSION['API_error'] = $json_response['err'];
 
-            $data['workspace_created'] = true;
+                $data['workspace_created'] = false;
+                $data['flexSwitchCheckDefault_createWorkspace'] = 'No';
 
-            update_option('devt-connect-data', json_encode($data));
+                update_option('devt-connect-data', json_encode($data));
 
-            $this->inNewWorkspaceCreateFolder($data); // Create Folder in new Workspace
+            } else {
+
+                $data['Workspace_ID'] = $json_response['id']; // Get created Workspace ID
+                $data['show_workspace_name'] = $json_response['name'];
+
+                $data['workspace_created'] = true;
+
+                update_option('devt-connect-data', json_encode($data));
+
+                $this->inNewWorkspaceCreateFolder($data); // Create Folder in new Workspace
+            }
+
         }
 
     }
@@ -653,6 +664,39 @@ class DevTasksIntegration
             }
         }
         wp_die();
+
+
+    }
+
+    /**
+     * Add error alert return from ClickUp API
+     *
+     * @since 1.0.1
+     */
+    public function errorNotices() {
+        // Start the session
+        session_start();
+
+        // Check if there is an error stored in the session
+        if (isset($_SESSION['API_error'])) {
+            // Get the error text
+            $error_text = $_SESSION['API_error'];
+
+            echo '<script>
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "'.$error_text.'",
+                    customClass: {
+                        confirmButton: "btn btn-primary",
+                    },
+                    buttonsStyling: false
+                })
+            </script>';
+
+            // Remove the error from the session
+            unset($_SESSION['API_error']);
+        }
 
 
     }

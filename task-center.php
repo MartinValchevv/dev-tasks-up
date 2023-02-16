@@ -350,7 +350,7 @@ class TaskCenter
     /**
      * Get Members for current list
      *
-     * @since 1.0.0
+     * @since 1.0.1
      */
     public function GetMembersCurrentList() {
 
@@ -378,13 +378,25 @@ class TaskCenter
             }
         }
 
-        if (isset($json_response['err'])) {
-            $data->List_members = '';
-        } else {
-            $data->List_members = maybe_serialize($arrMembers);
-        }
 
-        update_option('devt-connect-data', json_encode($data));
+        if (is_object($data)) {
+            if (isset($json_response['err'])) {
+                $data->List_members = '';
+            } else {
+                $data->List_members = maybe_serialize($arrMembers);
+            }
+
+            update_option('devt-connect-data', json_encode($data));
+        } else {
+            $data = new stdClass();
+            if (isset($json_response['err'])) {
+                $data->List_members = '';
+            } else {
+                $data->List_members = maybe_serialize($arrMembers);
+            }
+
+            update_option('devt-connect-data', json_encode($data));
+        }
 
     }
 

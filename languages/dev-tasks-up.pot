@@ -1,0 +1,166 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: DevtasksUp - ClickUp integration\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-02-16 13:39+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.5.0; wp-5.6\n"
+"X-Domain: dev-tasks-up"
+
+
+msgid "Settings"
+msgstr ""
+
+msgid "Task Center"
+msgstr ""
+
+msgid "Yes, confirm"
+msgstr ""
+
+msgid "Are you sure ?"
+msgstr ""
+
+msgid "Do you want to disconnect ?"
+msgstr ""
+
+msgid "Yes, disconnected !"
+msgstr ""
+
+msgid "No, cancel"
+msgstr ""
+
+msgid "Changes are saved"
+msgstr ""
+
+msgid "To change this setting"
+msgstr ""
+
+msgid "Comment"
+msgstr ""
+
+msgid "To send a comment you must enter your comment in the field"
+msgstr ""
+
+msgid "Select a folder to attach tasks to"
+msgstr ""
+
+msgid "Choose a folder"
+msgstr ""
+
+msgid "This field is required"
+msgstr ""
+
+msgid "Select a list to attach tasks to"
+msgstr ""
+
+msgid "Choose a list"
+msgstr ""
+
+msgid "Select a list to attach tasks to"
+msgstr ""
+
+msgid "Choose a list"
+msgstr ""
+
+msgid "If you like this plugin, please <a href=\"%s\" target=\"_blank\">make a donation</a> or leave me a <a href=\"%s\" target=\"_blank\">&#9733;&#9733;&#9733;&#9733;&#9733;</a> rating to support continued development. Thanks a bunch!"
+msgstr ""
+
+msgid "Create Task"
+msgstr ""
+
+msgid "Summary"
+msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid "Assignee"
+msgstr ""
+
+msgid "Unassigned"
+msgstr ""
+
+msgid "Priority"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "Low"
+msgstr ""
+
+msgid "Normal"
+msgstr ""
+
+msgid "High"
+msgstr ""
+
+msgid "Urgent"
+msgstr ""
+
+msgid "Create"
+msgstr ""
+
+msgid "The plugin is not configured"
+msgstr ""
+
+msgid "You must set up the link to your ClickUp account from the page. If you don\'t have an account, you can create one %s. Only a user with administrator rights can make the settings"
+msgstr ""
+
+msgid "Connecting with ClickUp account"
+msgstr ""
+
+msgid "Disconnected"
+msgstr ""
+
+msgid "Connected"
+msgstr ""
+
+msgid "Personal API Token"
+msgstr ""
+
+msgid "Client name"
+msgstr ""
+
+msgid "Client ID"
+msgstr ""
+
+msgid "Create a new working environment (automatically creates a folder with the client\'s domain in the new working environment, in the folder it creates a new list with the title Clients)"
+msgstr ""
+
+msgid "Choose a Workspace name"
+msgstr ""
+
+msgid "An application has been set up to run in the following path"
+msgstr ""
+
+msgid "Workspace"
+msgstr ""
+
+msgid "Folder"
+msgstr ""
+
+msgid "List"
+msgstr ""
+
+msgid "Choose an existing Workspace (choose a sheet in which the client will be able to create tasks and see the progress of the tasks)"
+msgstr ""
+
+msgid "Select a workspace to attach tasks to"
+msgstr ""
+
+msgid "Choose a Workspace"
+msgstr ""
+
+msgid "Save Changes"
+msgstr ""
+

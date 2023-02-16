@@ -1,0 +1,181 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: DevtasksUp - ClickUp integration\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-02-16 13:39+0000\n"
+"PO-Revision-Date: 2023-02-16 14:41+0000\n"
+"Last-Translator: \n"
+"Language-Team: Bulgarian\n"
+"Language: bg_BG\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.6.3; wp-6.1.1\n"
+"X-Domain: dev-tasks-up"
+
+msgid "Settings"
+msgstr "Настройки"
+
+msgid "Task Center"
+msgstr "Задачи"
+
+msgid "Yes, confirm"
+msgstr "Да, потвърди"
+
+msgid "Are you sure ?"
+msgstr "Сигурен ли си ?"
+
+msgid "Do you want to disconnect ?"
+msgstr "Искате ли да прекъснате връзката ?"
+
+msgid "Yes, disconnected !"
+msgstr "Да, прекъсни връзката !"
+
+msgid "No, cancel"
+msgstr "Не, откажи"
+
+msgid "Changes are saved"
+msgstr "Промените са запазени"
+
+msgid "To change this setting"
+msgstr "За да промените тази настройка"
+
+msgid "Comment"
+msgstr "Коментирай"
+
+msgid "To send a comment you must enter your comment in the field"
+msgstr "За да изпратите коментар, трябва да въведете своя коментар в полето"
+
+msgid "Select a folder to attach tasks to"
+msgstr "Изберете папка, към която да прикачите задачи"
+
+msgid "Choose a folder"
+msgstr "Изберете папка"
+
+msgid "This field is required"
+msgstr "Това поле е задължително"
+
+msgid "Select a list to attach tasks to"
+msgstr "Изберете списък, към който да прикачите задачи"
+
+msgid "Choose a list"
+msgstr "Изберете лист"
+
+msgid ""
+"If you like this plugin, please <a href=\"%s\" target=\"_blank\">make a "
+"donation</a> or leave me a <a href=\"%s\" target=\"_blank\">&#9733;&#9733;"
+"&#9733;&#9733;&#9733;</a> rating to support continued development. Thanks a "
+"bunch!"
+msgstr ""
+"Ако харесвате този плъгин , моля <a href=\"%s\" target=\"_blank\">направете "
+"дарение</a> или ми оставете <a href=\"%s\" target=\"_blank\">&#9733;&#9733;"
+"&#9733;&#9733;&#9733;</a> рейтинг в подкрепа на непрекъснатото развитие. "
+"Благодаря Ви много!"
+
+msgid "Create Task"
+msgstr "Съзадай задача"
+
+msgid "Summary"
+msgstr "Кратко описание"
+
+msgid "Description"
+msgstr "Описание"
+
+msgid "Assignee"
+msgstr "Закачи"
+
+msgid "Unassigned"
+msgstr "Никой"
+
+msgid "Priority"
+msgstr "Приоритет"
+
+msgid "None"
+msgstr "Няма"
+
+msgid "Low"
+msgstr "Нисък"
+
+msgid "Normal"
+msgstr "Нормален"
+
+msgid "High"
+msgstr "Висок"
+
+msgid "Urgent"
+msgstr "Спешно"
+
+msgid "Create"
+msgstr "Съзадай"
+
+msgid "The plugin is not configured"
+msgstr "Плъгинът не е конфигуриран"
+
+msgid ""
+"You must set up the link to your ClickUp account from the page. If you don't "
+"have an account, you can create one %s. Only a user with administrator "
+"rights can make the settings"
+msgstr ""
+"Трябва да настроите връзката към вашия акаунт в ClickUp от страницата. Ако "
+"нямате акаунт, можете да създадете %s. Само потребител с администраторски "
+"права може да прави настройките"
+
+msgid "Connecting with ClickUp account"
+msgstr "Свързани сте с ClickUp акаунта"
+
+msgid "Disconnected"
+msgstr "Няма връзка"
+
+msgid "Connected"
+msgstr "Свързано"
+
+msgid "Personal API Token"
+msgstr "Личен API Token"
+
+msgid "Client name"
+msgstr "Има на клиента"
+
+msgid "Client ID"
+msgstr "Клиент ID"
+
+msgid ""
+"Create a new working environment (automatically creates a folder with the "
+"client's domain in the new working environment, in the folder it creates a "
+"new list with the title Clients)"
+msgstr ""
+"Създаване на нова работна среда (автоматично създава папка с домейна на "
+"клиента в новата работна среда, в папката създава нов списък със заглавие "
+"Клиенти)"
+
+msgid "Choose a Workspace name"
+msgstr "Изберете име на работната среда"
+
+msgid "An application has been set up to run in the following path"
+msgstr "Приложението е настроено да работи в следния път"
+
+msgid "Workspace"
+msgstr "Работна среда"
+
+msgid "Folder"
+msgstr "Папка"
+
+msgid "List"
+msgstr "Списък"
+
+msgid ""
+"Choose an existing Workspace (choose a sheet in which the client will be "
+"able to create tasks and see the progress of the tasks)"
+msgstr ""
+"Изберете съществуваща работна среда (изберете лист, в който клиентът ще може "
+"да създава задачи и да вижда напредъка на задачите)"
+
+msgid "Select a workspace to attach tasks to"
+msgstr "Изберете работна среда, към която да прикачите задачи"
+
+msgid "Choose a Workspace"
+msgstr "Изберете работна среда"
+
+msgid "Save Changes"
+msgstr "Запази промените"

@@ -99,9 +99,11 @@ $workspaces = unserialize($DevTasksIntegration->getOption('all_workspaces'));
                                             <label class="form-check-label" for="select-workspace"><?php esc_html_e('Select a workspace to attach tasks to', 'dev-tasks-up'); ?></label>
                                             <select id="select-workspace" name="select-workspace" class="form-select" size="6" aria-label="size 6 select example">
                                                 <option disabled value=""><?php esc_html_e('Choose a Workspace', 'dev-tasks-up'); ?></option>
-                                                <?php foreach ($workspaces as $ws ) : ?>
-                                                <option value="<?php echo esc_attr($ws['id']) ?>"><?php echo esc_html($ws['name']) ?></option>
-                                                <?php endforeach; ?>
+                                                <?php if (!empty($workspaces)) : ?>
+                                                    <?php foreach ($workspaces as $ws ) : ?>
+                                                        <option value="<?php echo esc_attr($ws['id']) ?>"><?php echo esc_html($ws['name']) ?></option>
+                                                    <?php endforeach; ?>
+                                                <?php endif; ?>
                                             </select>
                                             <div class="invalid-feedback">
                                                 <?php esc_html_e('This field is required', 'dev-tasks-up'); ?>
