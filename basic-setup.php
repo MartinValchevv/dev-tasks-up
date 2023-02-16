@@ -30,7 +30,7 @@ function dvt_activate_plugin() {
  * @since 1.0.0
  */
 function dvt_load_plugin_textdomain() {
-    load_plugin_textdomain( 'dev-tasks-up', false, '/dev-tasks-up/languages/' );
+    load_plugin_textdomain( 'dev-tasks-up', false, '/'.DVT_STARTER_PLUGIN.'/languages/' );
 }
 add_action( 'plugins_loaded', 'dvt_load_plugin_textdomain' );
 
