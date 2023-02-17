@@ -96,7 +96,7 @@ $members = unserialize($DevTasksIntegration->getOption('List_members'));
             <div class="card-body">
                 <img src="<?php echo esc_url(DVT_STARTER_PLUGIN_URL . 'assets/images/choice.svg'); ?>" class="img-fluid" alt="choice"/>
                 <h5 class="card-title"><?php esc_html_e( 'The plugin is not configured', 'dev-tasks-up' ) ?></h5>
-                <p class="card-text"><?php echo sprintf(__( 'You must set up the link to your ClickUp account from the page. If you don\'t have an account, you can create one %s. Only a user with administrator rights can make the settings', 'dev-tasks-up' ), '<a href="https://clickup.com?fp_ref=hma1f" target="_blank">here</a>') ?></p>
+                <p class="card-text"><?php echo sprintf(__( 'You must set up the link to your ClickUp account from the page. If you don\'t have an account, you can create one %s. Only a user with administrator rights can make the settings', 'dev-tasks-up' ), '<a href="https://clickup.com?fp_ref=hma1f" target="_blank">' . esc_html(__('here', 'dev-tasks-up')) . '</a>') ?></p>
                 <a href="<?php echo esc_url(menu_page_url( 'dev-tasks-settings', false ))?>" class="btn btn-primary"><?php esc_html_e( 'Settings', 'dev-tasks-up' ) ?></a>
             </div>
         </div>

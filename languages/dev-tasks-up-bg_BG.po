@@ -1,10 +1,10 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: DevtasksUp - ClickUp integration\n"
+"Project-Id-Version: DevtasksUp - интеграция с ClickUp integration\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-16 13:39+0000\n"
-"PO-Revision-Date: 2023-02-16 14:41+0000\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2023-02-17 15:07+0000\n"
+"Last-Translator: Martin Valchev\n"
 "Language-Team: Bulgarian\n"
 "Language: bg_BG\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
@@ -15,54 +15,122 @@ msgstr ""
 "X-Loco-Version: 2.6.3; wp-6.1.1\n"
 "X-Domain: dev-tasks-up"
 
-msgid "Settings"
-msgstr "Настройки"
+#: views/admin-page-settings.php:71 views/admin-page-settings.php:120
+msgid "An application has been set up to run in the following path"
+msgstr "Приложението е настроено да работи в следния път"
 
-msgid "Task Center"
-msgstr "Задачи"
-
-msgid "Yes, confirm"
-msgstr "Да, потвърди"
-
+#: dev-tasks-up.php:138
 msgid "Are you sure ?"
 msgstr "Сигурен ли си ?"
 
-msgid "Do you want to disconnect ?"
-msgstr "Искате ли да прекъснате връзката ?"
+#: views/admin-page.php:37
+msgid "Assignee"
+msgstr "Закачи"
 
-msgid "Yes, disconnected !"
-msgstr "Да, прекъсни връзката !"
-
-msgid "No, cancel"
-msgstr "Не, откажи"
-
+#: dev-tasks-up.php:142
 msgid "Changes are saved"
 msgstr "Промените са запазени"
 
-msgid "To change this setting"
-msgstr "За да промените тази настройка"
-
-msgid "Comment"
-msgstr "Коментирай"
-
-msgid "To send a comment you must enter your comment in the field"
-msgstr "За да изпратите коментар, трябва да въведете своя коментар в полето"
-
-msgid "Select a folder to attach tasks to"
-msgstr "Изберете папка, към която да прикачите задачи"
-
+#: dev-tasks-up.php:585
 msgid "Choose a folder"
 msgstr "Изберете папка"
 
-msgid "This field is required"
-msgstr "Това поле е задължително"
-
-msgid "Select a list to attach tasks to"
-msgstr "Изберете списък, към който да прикачите задачи"
-
+#: dev-tasks-up.php:609 dev-tasks-up.php:655
 msgid "Choose a list"
 msgstr "Изберете лист"
 
+#: views/admin-page-settings.php:101
+msgid "Choose a Workspace"
+msgstr "Изберете работна среда"
+
+#: views/admin-page-settings.php:61
+msgid "Choose a Workspace name"
+msgstr "Изберете име на работната среда"
+
+#: views/admin-page-settings.php:89
+msgid ""
+"Choose an existing Workspace (choose a sheet in which the client will be "
+"able to create tasks and see the progress of the tasks)"
+msgstr ""
+"Изберете съществуваща работна среда (изберете лист, в който клиентът ще може "
+"да създава задачи и да вижда напредъка на задачите)"
+
+#: views/admin-page-settings.php:42 views/admin-page-settings.php:43
+msgid "Client ID"
+msgstr "Клиент ID"
+
+#: views/admin-page-settings.php:37 views/admin-page-settings.php:38
+msgid "Client name"
+msgstr "Има на клиента"
+
+#: views/admin-page-settings.php:46 views/admin-page-settings.php:47
+msgid "Client Secret"
+msgstr "Client Secret"
+
+#: dev-tasks-up.php:144
+msgid "Comment"
+msgstr "Коментирай"
+
+#: views/admin-page-settings.php:24
+msgid "Connected"
+msgstr "Свързано"
+
+#: views/admin-page-settings.php:19
+msgid "Connecting with ClickUp account"
+msgstr "Свързани сте с ClickUp акаунта"
+
+#: views/admin-page.php:62
+msgid "Create"
+msgstr "Съзадай"
+
+#: views/admin-page-settings.php:58
+msgid ""
+"Create a new working environment (automatically creates a folder with the "
+"client's domain in the new working environment, in the folder it creates a "
+"new list with the title Clients)"
+msgstr ""
+"Създаване на нова работна среда (автоматично създава папка с домейна на "
+"клиента в новата работна среда, в папката създава нов списък със заглавие "
+"Клиенти)"
+
+#: views/admin-page.php:21
+msgid "Create Task"
+msgstr "Съзадай задача"
+
+#: views/admin-page.php:31
+msgid "Description"
+msgstr "Описание"
+
+#. Name of the plugin
+#: dev-tasks-up.php:70
+msgid "DevtasksUp"
+msgstr "DevtasksUp"
+
+#: views/admin-page-settings.php:22
+msgid "Disconnected"
+msgstr "Няма връзка"
+
+#: dev-tasks-up.php:139
+msgid "Do you want to disconnect ?"
+msgstr "Искате ли да прекъснате връзката ?"
+
+#: views/admin-page-settings.php:76 views/admin-page-settings.php:125
+msgid "Folder"
+msgstr "Папка"
+
+#: views/admin-page.php:99
+msgid "here"
+msgstr "тук"
+
+#: views/admin-page.php:55
+msgid "High"
+msgstr "Висок"
+
+#. Author URI of the plugin
+msgid "https://martinvalchev.com/"
+msgstr "https://martinvalchev.com/"
+
+#: basic-setup.php:86
 msgid ""
 "If you like this plugin, please <a href=\"%s\" target=\"_blank\">make a "
 "donation</a> or leave me a <a href=\"%s\" target=\"_blank\">&#9733;&#9733;"
@@ -74,45 +142,122 @@ msgstr ""
 "&#9733;&#9733;&#9733;</a> рейтинг в подкрепа на непрекъснатото развитие. "
 "Благодаря Ви много!"
 
-msgid "Create Task"
-msgstr "Съзадай задача"
+#: views/admin-page-settings.php:78 views/admin-page-settings.php:127
+msgid "List"
+msgstr "Списък"
 
-msgid "Summary"
-msgstr "Кратко описание"
-
-msgid "Description"
-msgstr "Описание"
-
-msgid "Assignee"
-msgstr "Закачи"
-
-msgid "Unassigned"
-msgstr "Никой"
-
-msgid "Priority"
-msgstr "Приоритет"
-
-msgid "None"
-msgstr "Няма"
-
+#: views/admin-page.php:53
 msgid "Low"
 msgstr "Нисък"
 
+#. Author of the plugin
+msgid "Martin Valchev"
+msgstr "Мартин Вълчев"
+
+#: dev-tasks-up.php:141
+msgid "No, cancel"
+msgstr "Не, откажи"
+
+#: views/admin-page.php:52
+msgid "None"
+msgstr "Няма"
+
+#: views/admin-page.php:54
 msgid "Normal"
 msgstr "Нормален"
 
-msgid "High"
-msgstr "Висок"
+#: views/admin-page-settings.php:33 views/admin-page-settings.php:34
+msgid "Personal API Token"
+msgstr "Личен API Token"
 
-msgid "Urgent"
-msgstr "Спешно"
+#: views/admin-page.php:50
+msgid "Priority"
+msgstr "Приоритет"
 
-msgid "Create"
-msgstr "Съзадай"
+#: views/admin-page-settings.php:50 views/admin-page-settings.php:51
+msgid "Redirect URL(s)"
+msgstr "Redirect URL(s)"
 
+#: views/admin-page-settings.php:136
+msgid "Save Changes"
+msgstr "Запази промените"
+
+#: dev-tasks-up.php:583
+msgid "Select a folder to attach tasks to"
+msgstr "Изберете папка, към която да прикачите задачи"
+
+#: dev-tasks-up.php:607 dev-tasks-up.php:653
+msgid "Select a list to attach tasks to"
+msgstr "Изберете списък, към който да прикачите задачи"
+
+#: views/admin-page-settings.php:99
+msgid "Select a workspace to attach tasks to"
+msgstr "Изберете работна среда, към която да прикачите задачи"
+
+#: basic-setup.php:45 dev-tasks-up.php:80 dev-tasks-up.php:80
+#: views/admin-page.php:100
+msgid "Settings"
+msgstr "Настройки"
+
+#: views/admin-page.php:23
+msgid "Summary"
+msgstr "Кратко описание"
+
+#: dev-tasks-up.php:82 views/admin-page.php:9
+msgid "Task Center"
+msgstr "Задачи"
+
+#. Description of the plugin
+msgid ""
+"The plugin integrates ClickUp into the admin for streamlined task management."
+" Simply add an API key for full access to create tasks, leave comments, and "
+"view task priority. Ideal for developers to set up for clients for seamless "
+"task delegation."
+msgstr ""
+"Плъгинът се интегрира с ClickUp в администратора за опростено управление на "
+"задачите. Просто добавете API ключ за пълен достъп за създаване на задачи, "
+"оставяне на коментари и преглед на приоритета на задачите. Идеален за "
+"разработчици и техните клиенти за безпроблемно делегиране на задачи."
+
+#: views/admin-page.php:98
 msgid "The plugin is not configured"
 msgstr "Плъгинът не е конфигуриран"
 
+#: dev-tasks-up.php:591 dev-tasks-up.php:615 dev-tasks-up.php:661
+#: views/admin-page-settings.php:64 views/admin-page-settings.php:109
+#: views/admin-page.php:26
+msgid "This field is required"
+msgstr "Това поле е задължително"
+
+#: dev-tasks-up.php:143
+msgid "To change this setting"
+msgstr "За да промените тази настройка"
+
+#: dev-tasks-up.php:145
+msgid "To send a comment you must enter your comment in the field"
+msgstr "За да изпратите коментар, трябва да въведете своя коментар в полето"
+
+#: views/admin-page.php:39
+msgid "Unassigned"
+msgstr "Никой"
+
+#: views/admin-page.php:56
+msgid "Urgent"
+msgstr "Спешно"
+
+#: views/admin-page-settings.php:74 views/admin-page-settings.php:123
+msgid "Workspace"
+msgstr "Работна среда"
+
+#: dev-tasks-up.php:137
+msgid "Yes, confirm"
+msgstr "Да, потвърди"
+
+#: dev-tasks-up.php:140
+msgid "Yes, disconnected !"
+msgstr "Да, прекъсни връзката !"
+
+#: views/admin-page.php:99
 msgid ""
 "You must set up the link to your ClickUp account from the page. If you don't "
 "have an account, you can create one %s. Only a user with administrator "
@@ -121,61 +266,3 @@ msgstr ""
 "Трябва да настроите връзката към вашия акаунт в ClickUp от страницата. Ако "
 "нямате акаунт, можете да създадете %s. Само потребител с администраторски "
 "права може да прави настройките"
-
-msgid "Connecting with ClickUp account"
-msgstr "Свързани сте с ClickUp акаунта"
-
-msgid "Disconnected"
-msgstr "Няма връзка"
-
-msgid "Connected"
-msgstr "Свързано"
-
-msgid "Personal API Token"
-msgstr "Личен API Token"
-
-msgid "Client name"
-msgstr "Има на клиента"
-
-msgid "Client ID"
-msgstr "Клиент ID"
-
-msgid ""
-"Create a new working environment (automatically creates a folder with the "
-"client's domain in the new working environment, in the folder it creates a "
-"new list with the title Clients)"
-msgstr ""
-"Създаване на нова работна среда (автоматично създава папка с домейна на "
-"клиента в новата работна среда, в папката създава нов списък със заглавие "
-"Клиенти)"
-
-msgid "Choose a Workspace name"
-msgstr "Изберете име на работната среда"
-
-msgid "An application has been set up to run in the following path"
-msgstr "Приложението е настроено да работи в следния път"
-
-msgid "Workspace"
-msgstr "Работна среда"
-
-msgid "Folder"
-msgstr "Папка"
-
-msgid "List"
-msgstr "Списък"
-
-msgid ""
-"Choose an existing Workspace (choose a sheet in which the client will be "
-"able to create tasks and see the progress of the tasks)"
-msgstr ""
-"Изберете съществуваща работна среда (изберете лист, в който клиентът ще може "
-"да създава задачи и да вижда напредъка на задачите)"
-
-msgid "Select a workspace to attach tasks to"
-msgstr "Изберете работна среда, към която да прикачите задачи"
-
-msgid "Choose a Workspace"
-msgstr "Изберете работна среда"
-
-msgid "Save Changes"
-msgstr "Запази промените"

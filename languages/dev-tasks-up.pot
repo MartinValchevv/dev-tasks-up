@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DevtasksUp - ClickUp integration\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-16 13:39+0000\n"
+"POT-Creation-Date: 2023-02-17 14:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -16,151 +16,238 @@ msgstr ""
 "X-Loco-Version: 2.5.0; wp-5.6\n"
 "X-Domain: dev-tasks-up"
 
-
-msgid "Settings"
-msgstr ""
-
-msgid "Task Center"
-msgstr ""
-
-msgid "Yes, confirm"
-msgstr ""
-
-msgid "Are you sure ?"
-msgstr ""
-
-msgid "Do you want to disconnect ?"
-msgstr ""
-
-msgid "Yes, disconnected !"
-msgstr ""
-
-msgid "No, cancel"
-msgstr ""
-
-msgid "Changes are saved"
-msgstr ""
-
-msgid "To change this setting"
-msgstr ""
-
-msgid "Comment"
-msgstr ""
-
-msgid "To send a comment you must enter your comment in the field"
-msgstr ""
-
-msgid "Select a folder to attach tasks to"
-msgstr ""
-
-msgid "Choose a folder"
-msgstr ""
-
-msgid "This field is required"
-msgstr ""
-
-msgid "Select a list to attach tasks to"
-msgstr ""
-
-msgid "Choose a list"
-msgstr ""
-
-msgid "Select a list to attach tasks to"
-msgstr ""
-
-msgid "Choose a list"
-msgstr ""
-
-msgid "If you like this plugin, please <a href=\"%s\" target=\"_blank\">make a donation</a> or leave me a <a href=\"%s\" target=\"_blank\">&#9733;&#9733;&#9733;&#9733;&#9733;</a> rating to support continued development. Thanks a bunch!"
-msgstr ""
-
-msgid "Create Task"
-msgstr ""
-
-msgid "Summary"
-msgstr ""
-
-msgid "Description"
-msgstr ""
-
-msgid "Assignee"
-msgstr ""
-
-msgid "Unassigned"
-msgstr ""
-
-msgid "Priority"
-msgstr ""
-
-msgid "None"
-msgstr ""
-
-msgid "Low"
-msgstr ""
-
-msgid "Normal"
-msgstr ""
-
-msgid "High"
-msgstr ""
-
-msgid "Urgent"
-msgstr ""
-
-msgid "Create"
-msgstr ""
-
-msgid "The plugin is not configured"
-msgstr ""
-
-msgid "You must set up the link to your ClickUp account from the page. If you don\'t have an account, you can create one %s. Only a user with administrator rights can make the settings"
-msgstr ""
-
-msgid "Connecting with ClickUp account"
-msgstr ""
-
-msgid "Disconnected"
-msgstr ""
-
-msgid "Connected"
-msgstr ""
-
-msgid "Personal API Token"
-msgstr ""
-
-msgid "Client name"
-msgstr ""
-
-msgid "Client ID"
-msgstr ""
-
-msgid "Create a new working environment (automatically creates a folder with the client\'s domain in the new working environment, in the folder it creates a new list with the title Clients)"
-msgstr ""
-
-msgid "Choose a Workspace name"
-msgstr ""
-
+#: views/admin-page-settings.php:71 views/admin-page-settings.php:120
 msgid "An application has been set up to run in the following path"
 msgstr ""
 
-msgid "Workspace"
+#: dev-tasks-up.php:138
+msgid "Are you sure ?"
 msgstr ""
 
-msgid "Folder"
+#: views/admin-page.php:37
+msgid "Assignee"
 msgstr ""
 
-msgid "List"
+#: dev-tasks-up.php:142
+msgid "Changes are saved"
 msgstr ""
 
-msgid "Choose an existing Workspace (choose a sheet in which the client will be able to create tasks and see the progress of the tasks)"
+#: dev-tasks-up.php:585
+msgid "Choose a folder"
 msgstr ""
 
-msgid "Select a workspace to attach tasks to"
+#: dev-tasks-up.php:609 dev-tasks-up.php:655
+msgid "Choose a list"
 msgstr ""
 
+#: views/admin-page-settings.php:101
 msgid "Choose a Workspace"
 msgstr ""
 
+#: views/admin-page-settings.php:61
+msgid "Choose a Workspace name"
+msgstr ""
+
+#: views/admin-page-settings.php:89
+msgid ""
+"Choose an existing Workspace (choose a sheet in which the client will be "
+"able to create tasks and see the progress of the tasks)"
+msgstr ""
+
+#: views/admin-page-settings.php:42 views/admin-page-settings.php:43
+msgid "Client ID"
+msgstr ""
+
+#: views/admin-page-settings.php:37 views/admin-page-settings.php:38
+msgid "Client name"
+msgstr ""
+
+#: views/admin-page-settings.php:46 views/admin-page-settings.php:47
+msgid "Client Secret"
+msgstr ""
+
+#: dev-tasks-up.php:144
+msgid "Comment"
+msgstr ""
+
+#: views/admin-page-settings.php:24
+msgid "Connected"
+msgstr ""
+
+#: views/admin-page-settings.php:19
+msgid "Connecting with ClickUp account"
+msgstr ""
+
+#: views/admin-page.php:62
+msgid "Create"
+msgstr ""
+
+#: views/admin-page-settings.php:58
+msgid ""
+"Create a new working environment (automatically creates a folder with the "
+"client's domain in the new working environment, in the folder it creates a "
+"new list with the title Clients)"
+msgstr ""
+
+#: views/admin-page.php:21
+msgid "Create Task"
+msgstr ""
+
+#: views/admin-page.php:31
+msgid "Description"
+msgstr ""
+
+#. Name of the plugin
+#: dev-tasks-up.php:70
+msgid "DevtasksUp"
+msgstr ""
+
+#: views/admin-page-settings.php:22
+msgid "Disconnected"
+msgstr ""
+
+#: dev-tasks-up.php:139
+msgid "Do you want to disconnect ?"
+msgstr ""
+
+#: views/admin-page-settings.php:76 views/admin-page-settings.php:125
+msgid "Folder"
+msgstr ""
+
+#: views/admin-page.php:99
+msgid "here"
+msgstr ""
+
+#: views/admin-page.php:55
+msgid "High"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://martinvalchev.com/"
+msgstr ""
+
+#: basic-setup.php:86
+msgid ""
+"If you like this plugin, please <a href=\"%s\" target=\"_blank\">make a "
+"donation</a> or leave me a <a href=\"%s\" target=\"_blank\">&#9733;&#9733;"
+"&#9733;&#9733;&#9733;</a> rating to support continued development. Thanks a "
+"bunch!"
+msgstr ""
+
+#: views/admin-page-settings.php:78 views/admin-page-settings.php:127
+msgid "List"
+msgstr ""
+
+#: views/admin-page.php:53
+msgid "Low"
+msgstr ""
+
+#. Author of the plugin
+msgid "Martin Valchev"
+msgstr ""
+
+#: dev-tasks-up.php:141
+msgid "No, cancel"
+msgstr ""
+
+#: views/admin-page.php:52
+msgid "None"
+msgstr ""
+
+#: views/admin-page.php:54
+msgid "Normal"
+msgstr ""
+
+#: views/admin-page-settings.php:33 views/admin-page-settings.php:34
+msgid "Personal API Token"
+msgstr ""
+
+#: views/admin-page.php:50
+msgid "Priority"
+msgstr ""
+
+#: views/admin-page-settings.php:50 views/admin-page-settings.php:51
+msgid "Redirect URL(s)"
+msgstr ""
+
+#: views/admin-page-settings.php:136
 msgid "Save Changes"
 msgstr ""
 
+#: dev-tasks-up.php:583
+msgid "Select a folder to attach tasks to"
+msgstr ""
+
+#: dev-tasks-up.php:607 dev-tasks-up.php:653
+msgid "Select a list to attach tasks to"
+msgstr ""
+
+#: views/admin-page-settings.php:99
+msgid "Select a workspace to attach tasks to"
+msgstr ""
+
+#: basic-setup.php:45 dev-tasks-up.php:80 dev-tasks-up.php:80
+#: views/admin-page.php:100
+msgid "Settings"
+msgstr ""
+
+#: views/admin-page.php:23
+msgid "Summary"
+msgstr ""
+
+#: dev-tasks-up.php:82 views/admin-page.php:9
+msgid "Task Center"
+msgstr ""
+
+#. Description of the plugin
+msgid ""
+"The plugin integrates ClickUp into the admin for streamlined task management."
+" Simply add an API key for full access to create tasks, leave comments, and "
+"view task priority. Ideal for developers to set up for clients for seamless "
+"task delegation."
+msgstr ""
+
+#: views/admin-page.php:98
+msgid "The plugin is not configured"
+msgstr ""
+
+#: dev-tasks-up.php:591 dev-tasks-up.php:615 dev-tasks-up.php:661
+#: views/admin-page-settings.php:64 views/admin-page-settings.php:109
+#: views/admin-page.php:26
+msgid "This field is required"
+msgstr ""
+
+#: dev-tasks-up.php:143
+msgid "To change this setting"
+msgstr ""
+
+#: dev-tasks-up.php:145
+msgid "To send a comment you must enter your comment in the field"
+msgstr ""
+
+#: views/admin-page.php:39
+msgid "Unassigned"
+msgstr ""
+
+#: views/admin-page.php:56
+msgid "Urgent"
+msgstr ""
+
+#: views/admin-page-settings.php:74 views/admin-page-settings.php:123
+msgid "Workspace"
+msgstr ""
+
+#: dev-tasks-up.php:137
+msgid "Yes, confirm"
+msgstr ""
+
+#: dev-tasks-up.php:140
+msgid "Yes, disconnected !"
+msgstr ""
+
+#: views/admin-page.php:99
+msgid ""
+"You must set up the link to your ClickUp account from the page. If you don't "
+"have an account, you can create one %s. Only a user with administrator "
+"rights can make the settings"
+msgstr ""
