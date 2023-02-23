@@ -37,6 +37,18 @@ $workspaces = unserialize($DevTasksIntegration->getOption('all_workspaces'));
                         <input type="text" name="client_name" id="client_name" value="<?php echo esc_attr($DevTasksIntegration->getOption('client_name')); ?>" class="form-control" placeholder="<?php esc_html_e('Client name', 'dev-tasks-up'); ?>">
                         <label for="client_name"><?php esc_html_e('Client name', 'dev-tasks-up'); ?></label>
                     </div>
+                    <div class="form-check" style="margin: 10px 0;">
+                        <input class="form-check-input" type="checkbox" value="<?php echo esc_attr($DevTasksIntegration->getOption('new_task_notify')); ?>" name="flexCheckNewTask" id="flexCheckNewTask" <?php echo ($DevTasksIntegration->getOption('new_task_notify') == 'true')? 'checked' : ''; ?>>
+                        <label class="form-check-label" for="flexCheckNewTask">
+                            <?php esc_html_e('Receive email notifications from ClickUp when a new task is created', 'dev-tasks-up'); ?>
+                        </label>
+                    </div>
+                    <div class="form-check" style="margin: 10px 0;">
+                        <input class="form-check-input" type="checkbox" value="<?php echo esc_attr($DevTasksIntegration->getOption('new_comment_notify')); ?>" name="flexCheckNewComment" id="flexCheckNewComment" <?php echo ($DevTasksIntegration->getOption('new_comment_notify') == 'true')? 'checked' : ''; ?>>
+                        <label class="form-check-label" for="flexCheckNewComment">
+                            <?php esc_html_e('Receive email notifications from ClickUp when a new comment is posted', 'dev-tasks-up'); ?>
+                        </label>
+                    </div>
                     <?php if (0): ?>
                         <div class="form-floating">
                             <input type="text" name="client_ID" id="client_ID" value="<?php echo esc_attr($DevTasksIntegration->getOption('client_ID')); ?>" class="form-control" placeholder="<?php esc_html_e('Client ID', 'dev-tasks-up'); ?>">

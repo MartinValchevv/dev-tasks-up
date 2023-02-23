@@ -17,6 +17,16 @@ jQuery( document ).ready(function($) {
         }
     });
 
+    /** @since 1.1.0 change event for setting page checkbox notify new task  */
+    $('#flexCheckNewTask').on('change', function() {
+        $(this).is(':checked') ? $(this).val('true') : $(this).val('false');
+    });
+
+    /** @since 1.1.0 change event for setting page checkbox notify new comment  */
+    $('#flexCheckNewComment').on('change', function() {
+        $(this).is(':checked') ? $(this).val('true') : $(this).val('false');
+    });
+
     /** @since 1.0.0 change event choose_workspaces  */
     $('#choose_list').on('change', function () {
         if ($(this).is(':checked')) {

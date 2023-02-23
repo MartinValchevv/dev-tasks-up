@@ -251,3 +251,11 @@ msgid ""
 "have an account, you can create one %s. Only a user with administrator "
 "rights can make the settings"
 msgstr ""
+
+#: views/admin-page-settings.php:43
+msgid "Receive email notifications from ClickUp when a new task is created"
+msgstr ""
+
+#: views/admin-page-settings.php:49
+msgid "Receive email notifications from ClickUp when a new comment is posted"
+msgstr ""

@@ -104,7 +104,7 @@ class TaskCenter
     /**
      * Add comments in task
      *
-     * @since 1.0.4
+     * @since 1.1.0
      */
     public function addTaskComments()
     {
@@ -118,7 +118,7 @@ class TaskCenter
         $payload = array(
             "comment_text" => sanitize_text_field($_POST['comment']),
             "assignee" => 0,
-            "notify_all" => true
+            "notify_all" => ($this->getOption('new_comment_notify')) ? $this->getOption('new_comment_notify') : false
         );
 
         $query = array(
@@ -199,7 +199,7 @@ class TaskCenter
     /**
      * Save admin Task Center page
      *
-     * @since 1.0.4
+     * @since 1.1.0
      */
     public function saveFormCreateTask()
     {
@@ -233,7 +233,7 @@ class TaskCenter
                 "time_estimate" => null,
                 "start_date" => null,
                 "start_date_time" => false,
-                "notify_all" => true,
+                "notify_all" => ($this->getOption('new_task_notify')) ? $this->getOption('new_task_notify') : false,
                 "parent" => NULL,
                 "links_to" => NULL,
                 "check_required_custom_fields" => true,
