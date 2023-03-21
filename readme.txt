@@ -5,7 +5,7 @@ Tags: dev, task, projects, ClickUp, integration, admin ,task management, tasks, 
 Requires at least: 5.3
 Tested up to: 6.1.1
 Requires PHP: 7.4
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,10 @@ This plugin is ideal for developers who want to set it up for their clients and 
 
 == Changelog ==
 
+= 1.1.1 =
+* fix warning for start session
+* add feedback when deactivate plugin
+
 = 1.1.0 =
 * New option settings - Receive email notify for new created task or new comment
 * Update BG translations
@@ -90,6 +94,10 @@ This plugin is ideal for developers who want to set it up for their clients and 
 
 
 == Upgrade Notice ==
+
+= 1.1.1 =
+* fix warning for start session
+* add feedback when deactivate plugin
 
 = 1.1.0 =
 * New option settings - Receive email notify for new created task or new comment

@@ -259,3 +259,39 @@ msgstr ""
 #: views/admin-page-settings.php:49
 msgid "Receive email notifications from ClickUp when a new comment is posted"
 msgstr ""
+
+msgid "Quick Feedback"
+msgstr ""
+
+msgid "If you have a moment, please share why you are deactivating DevtasksUp - ClickUp integration"
+msgstr ""
+
+msgid "I no longer need the plugin"
+msgstr ""
+
+msgid "I found a better plugin"
+msgstr ""
+
+msgid "Please share which plugin"
+msgstr ""
+
+msgid "I couldn\'t get the plugin to work"
+msgstr ""
+
+msgid "It\'s a temporary deactivation"
+msgstr ""
+
+msgid "Plugin was not meeting expectations"
+msgstr ""
+
+msgid "Other"
+msgstr ""
+
+msgid "Please share the reason"
+msgstr ""
+
+msgid "Submit & Deactivate"
+msgstr ""
+
+msgid "Skip & Deactivate"
+msgstr ""

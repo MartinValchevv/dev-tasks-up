@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) exit;
  * Description: The plugin integrates ClickUp into the admin for streamlined task management. Simply add an API key for full access to create tasks, leave comments, and view task priority. Ideal for developers to set up for clients for seamless task delegation.
  * Author: Martin Valchev
  * Author URI: https://martinvalchev.com/
- * Version: 1.1.0
+ * Version: 1.1.1
  * Text Domain: dev-tasks-up
  * Domain Path: /languages
  * License: GPL v2 - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
@@ -16,12 +16,13 @@ if (!defined('ABSPATH')) exit;
 /**
  * Define constants
  *
- * @since 1.0.0
+ * @since 1.1.1
  */
-if ( ! defined( 'DVT_VERSION_NUM' ) ) 		define( 'DVT_VERSION_NUM'		, '1.1.0' ); // Plugin version constant
+if ( ! defined( 'DVT_VERSION_NUM' ) ) 		    define( 'DVT_VERSION_NUM'		, '1.1.1' ); // Plugin version constant
 if ( ! defined( 'DVT_STARTER_PLUGIN' ) )		define( 'DVT_STARTER_PLUGIN'		, trim( dirname( plugin_basename( __FILE__ ) ), '/' ) ); // Name of the plugin folder eg - 'dev-tasks-up'
 if ( ! defined( 'DVT_STARTER_PLUGIN_DIR' ) )	define( 'DVT_STARTER_PLUGIN_DIR'	, plugin_dir_path( __FILE__ ) ); // Plugin directory absolute path with the trailing slash. Useful for using with includes eg - /var/www/html/wp-content/plugins/dev-tasks-up/
 if ( ! defined( 'DVT_STARTER_PLUGIN_URL' ) )	define( 'DVT_STARTER_PLUGIN_URL'	, plugin_dir_url( __FILE__ ) ); // URL to the plugin folder with the trailing slash. Useful for referencing src eg - http://localhost/wp/wp-content/plugins/dev-tasks-up/
+if ( ! defined( 'DVT_PLUGIN_NAME' ) )	        define( 'DVT_PLUGIN_NAME'	        , get_file_data(__FILE__, ['Plugin Name'], false)[0] ); // Name plugin - 'DevtasksUp'
 
 // Load basic setup. Plugin list links, text domain, footer links etc.
 require_once( DVT_STARTER_PLUGIN_DIR . 'basic-setup.php' );
@@ -35,7 +36,7 @@ class DevTasksIntegration
     /**
      * Construct
      *
-     * @since 1.0.1
+     * @since 1.1.1
      */
     public function __construct()
     {
@@ -48,11 +49,15 @@ class DevTasksIntegration
         add_action('dev_task_up_inNewWorkspaceFolderCreateList', array($this, 'inNewWorkspaceFolderCreateList'));
         add_action('dev_task_up_getWorkspaces', array($this, 'getWorkspaces'));
         add_action('admin_notices', array($this, 'errorNotices'));
+        add_action( 'init',  array($this, 'dev_task_up_start_session' ));
+        add_action( 'admin_footer-plugins.php',  array($this, 'dvt_feedback_dialog' ));
 
         add_action('wp_ajax_select_workspace', array($this, 'selectWorkspace'));
         add_action('wp_ajax_nopriv_select_workspace',  array($this, 'selectWorkspace'));
         add_action('wp_ajax_select_folder', array($this, 'selectFolder'));
         add_action('wp_ajax_nopriv_select_folder',  array($this, 'selectFolder'));
+        add_action('wp_ajax_send_deactivation_feedback_email', array($this, 'dvt_send_deactivation_email'));
+        add_action('wp_ajax_nopriv_send_deactivation_feedback_email',  array($this, 'dvt_send_deactivation_email'));
 
         // add_shortcode('dev-tasks-plugin', array($this, 'shortcodeAction'));
     }
@@ -107,7 +112,7 @@ class DevTasksIntegration
     /**
      * Add Admin scripts and styles
      *
-     * @since 1.0.1
+     * @since 1.1.1
      */
     public function dev_tasks_admin_styles($hook) {
 
@@ -126,6 +131,10 @@ class DevTasksIntegration
            wp_register_script( 'select2', plugin_dir_url( __FILE__ ) . 'assets/select2/select2.min.js', array( 'jquery' ), '', true );
            wp_enqueue_script( 'select2' );
 
+        }
+
+        if ($hook == "plugins.php") {
+            wp_enqueue_script( 'dvt-feedback', plugins_url( 'assets/js/feedback.js', __FILE__ ), '', DVT_VERSION_NUM );
         }
 
         $translation_array = array(
@@ -671,13 +680,22 @@ class DevTasksIntegration
     }
 
     /**
+     * Start plugin session
+     *
+     * @since 1.1.1
+     */
+    public function dev_task_up_start_session() {
+        if ( ! session_id() ) {
+            session_start();
+        }
+    }
+
+    /**
      * Add error alert return from ClickUp API
      *
-     * @since 1.0.1
+     * @since 1.1.1
      */
     public function errorNotices() {
-        // Start the session
-        session_start();
 
         // Check if there is an error stored in the session
         if (isset($_SESSION['API_error'])) {
@@ -699,9 +717,205 @@ class DevTasksIntegration
             // Remove the error from the session
             unset($_SESSION['API_error']);
         }
+    }
 
+
+    /**
+     * Feedback when deactivate plugin view
+     *
+     * @since 1.1.1
+     */
+    public function dvt_feedback_dialog() {
+        ?>
+        <div id="dvt-popup-container" class="popup-container">
+            <div class="popup-content">
+                <h3 style="margin-top: 0;"><?php echo esc_html__('Quick Feedback' , 'dev-tasks-up') ?></h3>
+                <p style="font-weight: 600;"><?php echo esc_html__('If you have a moment, please share why you are deactivating DevtasksUp - ClickUp integration' , 'dev-tasks-up') ?></p>
+                <hr style="margin-bottom: 20px;">
+                <form id="dvt-feedback-form">
+                    <div class="feedback-option">
+                        <input type="radio" name="reason" value="needed" data-test="test" id="needed" required>
+                        <label for="needed"><?php echo esc_html__('I no longer need the plugin' , 'dev-tasks-up') ?></label>
+                    </div>
+                    <div class="feedback-option">
+                        <input type="radio" name="reason" value="alternative" id="alternative" required>
+                        <label for="alternative"><?php echo esc_html__('I found a better plugin' , 'dev-tasks-up') ?></label>
+                    </div>
+                    <div class="feedback-option hidden" id="which-plugin">
+                        <input type="text" placeholder="<?php echo esc_html__('Please share which plugin' , 'dev-tasks-up') ?>" name="which-plugin" id="which-plugin" style="width: 100%;"/>
+                    </div>
+                    <div class="feedback-option">
+                        <input type="radio" name="reason" value="get_plugin_to_work" id="get_plugin_to_work" required>
+                        <label for="get_plugin_to_work"><?php echo esc_html__('I couldn\'t get the plugin to work' , 'dev-tasks-up') ?></label>
+                    </div>
+                    <div class="feedback-option">
+                        <input type="radio" name="reason" value="temporary" id="temporary" required>
+                        <label for="temporary"><?php echo esc_html__('It\'s a temporary deactivation' , 'dev-tasks-up') ?></label>
+                    </div>
+                    <div class="feedback-option">
+                        <input type="radio" name="reason" value="expectations" id="expectations" required>
+                        <label for="expectations"><?php echo esc_html__('Plugin was not meeting expectations' , 'dev-tasks-up') ?></label>
+                    </div>
+                    <div class="feedback-option">
+                        <input type="radio" name="reason" value="other" id="other" required>
+                        <label for="other"><?php echo esc_html__('Other' , 'dev-tasks-up') ?></label>
+                    </div>
+                    <div class="feedback-option hidden" id="other-reason">
+                        <textarea placeholder="<?php echo esc_html__('Please share the reason' , 'dev-tasks-up') ?>" name="other-reason-text" id="other-reason-text" rows="3" style="width: 100%;"></textarea>
+                    </div>
+                    <button type="submit"><?php echo esc_html__('Submit & Deactivate' , 'dev-tasks-up') ?></button>
+                    <br>
+                    <a class="dvt-skip" href="javascript:;"><?php echo esc_html__('Skip & Deactivate' , 'dev-tasks-up') ?></a>
+                </form>
+            </div>
+        </div>
+
+        <style>
+            .popup-container {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.7);
+                z-index: 9999;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                visibility: hidden;
+                opacity: 0;
+                transition: visibility 0s, opacity 0.3s ease;
+            }
+
+            .popup-container.show {
+                visibility: visible;
+                opacity: 1;
+            }
+
+            .popup-content {
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 5px;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+                max-width: 500px;
+                width: 100%;
+                text-align: center;
+            }
+
+            .popup-content h2 {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+            .feedback-option {
+                display: flex;
+                align-items: center;
+                margin-bottom: 10px;
+            }
+
+            .feedback-option label {
+                margin-left: 10px;
+            }
+
+            .hidden {
+                display: none;
+            }
+
+            #dvt-feedback-form button {
+                background-color: #222;
+                border-radius: 3px;
+                color: #fff;
+                line-height: 1;
+                padding: 12px 20px;
+                font-size: 13px;
+                width: 180px;
+                height: 38px;
+                border-width: 0;
+                font-weight: 500;
+                cursor: pointer;
+                margin-bottom: 5px;
+            }
+
+            .dvt-skip {
+                font-size: 12px;
+                color:#a4afb7;
+                text-decoration: none;
+                font-weight: 400;
+            }
+
+            .dvt-skip:hover {
+                color:#a4afb7;
+                text-decoration: underline;
+            }
+
+        </style>
+        <?php
+    }
+
+
+    /**
+     * Feedback send email
+     *
+     * @since 1.1.1
+     */
+    function dvt_send_deactivation_email() {
+
+        $deactivate_reasons = [
+            'needed' => [
+                'title' => esc_html__( 'I no longer need the plugin', 'dev-tasks-up' ),
+            ],
+            'alternative' => [
+                'title' => esc_html__( 'I found a better plugin', 'dev-tasks-up' ),
+            ],
+            'get_plugin_to_work' => [
+                'title' => esc_html__( 'I couldn\'t get the plugin to work', 'dev-tasks-up' ),
+            ],
+            'temporary' => [
+                'title' => esc_html__( 'It\'s a temporary deactivation', 'dev-tasks-up' ),
+            ],
+            'expectations' => [
+                'title' => esc_html__( 'Plugin was not meeting expectations', 'dev-tasks-up' ),
+            ],
+            'other' => [
+                'title' => esc_html__( 'Other', 'dev-tasks-up' ),
+            ],
+        ];
+
+        $form_data = $_POST['form_data'];
+
+        $to = 'plugins@martinvalchev.com';
+        $headers[] = 'From: '.get_bloginfo('name').'<'.get_option('admin_email').'>';
+        $headers[] = 'Content-Type: text/html';
+        $subject = DVT_PLUGIN_NAME.' deactivated';
+
+        $reason_title = $deactivate_reasons[$form_data['reason']]['title'];
+
+        ob_start();
+        ?>
+        <html>
+        <body>
+        <p>The plugin <?=esc_html(DVT_PLUGIN_NAME)?> has been deactivated with the following reason:</p>
+        <p><strong><?=esc_html($reason_title )?></strong></p>
+        <?php if (!empty($form_data['which-plugin'])) : ?>
+            <p>Plugin replaced with:</p>
+            <p><strong><?=esc_html($form_data['which-plugin'])?></strong></p>
+        <?php endif; ?>
+        <?php if (!empty($form_data['other-reason-text'])) : ?>
+            <p>Additional details:</p>
+            <p><strong><?=esc_html($form_data['other-reason-text'])?></strong></p>
+        <?php endif; ?>
+        </body>
+        </html>
+        <?php
+        $html = ob_get_clean();
+
+        wp_mail($to, $subject, $html, $headers);
+        wp_send_json_success('Email sent successfully');
+
+        wp_die();
 
     }
+
 
 
 }
