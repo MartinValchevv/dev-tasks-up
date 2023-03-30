@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) exit;
  * Description: The plugin integrates ClickUp into the admin for streamlined task management. Simply add an API key for full access to create tasks, leave comments, and view task priority. Ideal for developers to set up for clients for seamless task delegation.
  * Author: Martin Valchev
  * Author URI: https://martinvalchev.com/
- * Version: 1.1.1
+ * Version: 1.1.2
  * Text Domain: dev-tasks-up
  * Domain Path: /languages
  * License: GPL v2 - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) exit;
  *
  * @since 1.1.1
  */
-if ( ! defined( 'DVT_VERSION_NUM' ) ) 		    define( 'DVT_VERSION_NUM'		, '1.1.1' ); // Plugin version constant
+if ( ! defined( 'DVT_VERSION_NUM' ) ) 		    define( 'DVT_VERSION_NUM'		, '1.1.2' ); // Plugin version constant
 if ( ! defined( 'DVT_STARTER_PLUGIN' ) )		define( 'DVT_STARTER_PLUGIN'		, trim( dirname( plugin_basename( __FILE__ ) ), '/' ) ); // Name of the plugin folder eg - 'dev-tasks-up'
 if ( ! defined( 'DVT_STARTER_PLUGIN_DIR' ) )	define( 'DVT_STARTER_PLUGIN_DIR'	, plugin_dir_path( __FILE__ ) ); // Plugin directory absolute path with the trailing slash. Useful for using with includes eg - /var/www/html/wp-content/plugins/dev-tasks-up/
 if ( ! defined( 'DVT_STARTER_PLUGIN_URL' ) )	define( 'DVT_STARTER_PLUGIN_URL'	, plugin_dir_url( __FILE__ ) ); // URL to the plugin folder with the trailing slash. Useful for referencing src eg - http://localhost/wp/wp-content/plugins/dev-tasks-up/
@@ -36,7 +36,7 @@ class DevTasksIntegration
     /**
      * Construct
      *
-     * @since 1.1.1
+     * @since 1.1.2
      */
     public function __construct()
     {
@@ -56,8 +56,8 @@ class DevTasksIntegration
         add_action('wp_ajax_nopriv_select_workspace',  array($this, 'selectWorkspace'));
         add_action('wp_ajax_select_folder', array($this, 'selectFolder'));
         add_action('wp_ajax_nopriv_select_folder',  array($this, 'selectFolder'));
-        add_action('wp_ajax_send_deactivation_feedback_email', array($this, 'dvt_send_deactivation_email'));
-        add_action('wp_ajax_nopriv_send_deactivation_feedback_email',  array($this, 'dvt_send_deactivation_email'));
+        add_action('wp_ajax_dvt_send_deactivation_feedback_email', array($this, 'dvt_send_deactivation_email'));
+        add_action('wp_ajax_nopriv_dvt_send_deactivation_feedback_email',  array($this, 'dvt_send_deactivation_email'));
 
         // add_shortcode('dev-tasks-plugin', array($this, 'shortcodeAction'));
     }
@@ -112,7 +112,7 @@ class DevTasksIntegration
     /**
      * Add Admin scripts and styles
      *
-     * @since 1.1.1
+     * @since 1.1.2
      */
     public function dev_tasks_admin_styles($hook) {
 
@@ -152,8 +152,10 @@ class DevTasksIntegration
             'change_this_setting' => __( 'To change this setting', 'dev-tasks-up' ),
             'comment' => __( 'Comment', 'dev-tasks-up' ),
             'err_empty_comment' => __( 'To send a comment you must enter your comment in the field', 'dev-tasks-up' ),
+            'deactivating' => __( 'Deactivating...', 'dev-tasks-up' ),
         );
         wp_localize_script( 'dev-tasks-js', 'translate_obj', $translation_array );
+        wp_localize_script( 'dvt-feedback', 'translate_obj', $translation_array );
 
     }
 
@@ -723,7 +725,7 @@ class DevTasksIntegration
     /**
      * Feedback when deactivate plugin view
      *
-     * @since 1.1.1
+     * @since 1.1.2
      */
     public function dvt_feedback_dialog() {
         ?>
@@ -734,34 +736,34 @@ class DevTasksIntegration
                 <hr style="margin-bottom: 20px;">
                 <form id="dvt-feedback-form">
                     <div class="feedback-option">
-                        <input type="radio" name="reason" value="needed" data-test="test" id="needed" required>
-                        <label for="needed"><?php echo esc_html__('I no longer need the plugin' , 'dev-tasks-up') ?></label>
+                        <input type="radio" name="reason" value="needed" id="dvt-needed" required>
+                        <label for="dvt-needed"><?php echo esc_html__('I no longer need the plugin' , 'dev-tasks-up') ?></label>
                     </div>
                     <div class="feedback-option">
-                        <input type="radio" name="reason" value="alternative" id="alternative" required>
-                        <label for="alternative"><?php echo esc_html__('I found a better plugin' , 'dev-tasks-up') ?></label>
+                        <input type="radio" name="reason" value="alternative" id="dvt-alternative" required>
+                        <label for="dvt-alternative"><?php echo esc_html__('I found a better plugin' , 'dev-tasks-up') ?></label>
                     </div>
-                    <div class="feedback-option hidden" id="which-plugin">
-                        <input type="text" placeholder="<?php echo esc_html__('Please share which plugin' , 'dev-tasks-up') ?>" name="which-plugin" id="which-plugin" style="width: 100%;"/>
-                    </div>
-                    <div class="feedback-option">
-                        <input type="radio" name="reason" value="get_plugin_to_work" id="get_plugin_to_work" required>
-                        <label for="get_plugin_to_work"><?php echo esc_html__('I couldn\'t get the plugin to work' , 'dev-tasks-up') ?></label>
+                    <div class="feedback-option hidden" id="dvt-which-plugin">
+                        <input type="text" placeholder="<?php echo esc_html__('Please share which plugin' , 'dev-tasks-up') ?>" name="which-plugin" id="dvt-which-plugin" style="width: 100%;"/>
                     </div>
                     <div class="feedback-option">
-                        <input type="radio" name="reason" value="temporary" id="temporary" required>
-                        <label for="temporary"><?php echo esc_html__('It\'s a temporary deactivation' , 'dev-tasks-up') ?></label>
+                        <input type="radio" name="reason" value="get_plugin_to_work" id="dvt-get_plugin_to_work" required>
+                        <label for="dvt-get_plugin_to_work"><?php echo esc_html__('I couldn\'t get the plugin to work' , 'dev-tasks-up') ?></label>
                     </div>
                     <div class="feedback-option">
-                        <input type="radio" name="reason" value="expectations" id="expectations" required>
-                        <label for="expectations"><?php echo esc_html__('Plugin was not meeting expectations' , 'dev-tasks-up') ?></label>
+                        <input type="radio" name="reason" value="temporary" id="dvt-temporary" required>
+                        <label for="dvt-temporary"><?php echo esc_html__('It\'s a temporary deactivation' , 'dev-tasks-up') ?></label>
                     </div>
                     <div class="feedback-option">
-                        <input type="radio" name="reason" value="other" id="other" required>
-                        <label for="other"><?php echo esc_html__('Other' , 'dev-tasks-up') ?></label>
+                        <input type="radio" name="reason" value="expectations" id="dvt-expectations" required>
+                        <label for="dvt-expectations"><?php echo esc_html__('Plugin was not meeting expectations' , 'dev-tasks-up') ?></label>
                     </div>
-                    <div class="feedback-option hidden" id="other-reason">
-                        <textarea placeholder="<?php echo esc_html__('Please share the reason' , 'dev-tasks-up') ?>" name="other-reason-text" id="other-reason-text" rows="3" style="width: 100%;"></textarea>
+                    <div class="feedback-option">
+                        <input type="radio" name="reason" value="other" id="dvt-other" required>
+                        <label for="dvt-other"><?php echo esc_html__('Other' , 'dev-tasks-up') ?></label>
+                    </div>
+                    <div class="feedback-option hidden" id="dvt-other-reason">
+                        <textarea placeholder="<?php echo esc_html__('Please share the reason' , 'dev-tasks-up') ?>" name="other-reason-text" id="dvt-other-reason-text" rows="3" style="width: 100%;"></textarea>
                     </div>
                     <button type="submit"><?php echo esc_html__('Submit & Deactivate' , 'dev-tasks-up') ?></button>
                     <br>
@@ -840,7 +842,7 @@ class DevTasksIntegration
                 font-size: 12px;
                 color:#a4afb7;
                 text-decoration: none;
-                font-weight: 400;
+                font-weight: 600;
             }
 
             .dvt-skip:hover {
@@ -856,7 +858,7 @@ class DevTasksIntegration
     /**
      * Feedback send email
      *
-     * @since 1.1.1
+     * @since 1.1.2
      */
     function dvt_send_deactivation_email() {
 
@@ -881,7 +883,7 @@ class DevTasksIntegration
             ],
         ];
 
-        $form_data = $_POST['form_data'];
+        $form_data = array_map( 'sanitize_text_field', $_POST['form_data'] );
 
         $to = 'plugins@martinvalchev.com';
         $headers[] = 'From: '.get_bloginfo('name').'<'.get_option('admin_email').'>';
@@ -894,15 +896,15 @@ class DevTasksIntegration
         ?>
         <html>
         <body>
-        <p>The plugin <?=esc_html(DVT_PLUGIN_NAME)?> has been deactivated with the following reason:</p>
-        <p><strong><?=esc_html($reason_title )?></strong></p>
+        <p>The plugin <?php echo esc_html(DVT_PLUGIN_NAME)?> has been deactivated with the following reason:</p>
+        <p><strong><?php echo esc_html($reason_title )?></strong></p>
         <?php if (!empty($form_data['which-plugin'])) : ?>
             <p>Plugin replaced with:</p>
-            <p><strong><?=esc_html($form_data['which-plugin'])?></strong></p>
+            <p><strong><?php echo esc_html($form_data['which-plugin'])?></strong></p>
         <?php endif; ?>
         <?php if (!empty($form_data['other-reason-text'])) : ?>
             <p>Additional details:</p>
-            <p><strong><?=esc_html($form_data['other-reason-text'])?></strong></p>
+            <p><strong><?php echo esc_html($form_data['other-reason-text'])?></strong></p>
         <?php endif; ?>
         </body>
         </html>

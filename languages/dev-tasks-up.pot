@@ -295,3 +295,6 @@ msgstr ""
 
 msgid "Skip & Deactivate"
 msgstr ""
+
+msgid "Deactivating..."
+msgstr ""
