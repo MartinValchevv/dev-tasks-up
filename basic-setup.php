@@ -72,7 +72,7 @@ add_filter( 'plugin_row_meta', 'dvt_plugin_row_meta', 10, 2 );
  * A function to add footer text to the settings page of the plugin. Footer text contains plugin rating and donation links.
  * Note: Remove the rating link if the plugin doesn't have a WordPress.org directory listing yet. (i.e. before initial approval)
  *
- * @since 1.0.1
+ * @since 1.1.3
  * @refer https://codex.wordpress.org/Function_Reference/get_current_screen
  */
 function dvt_footer_text($default) {
@@ -86,7 +86,11 @@ function dvt_footer_text($default) {
     $dvt_footer_text = sprintf( __( 'If you like this plugin, please <a href="%s" target="_blank">make a donation</a> or leave me a <a href="%s" target="_blank">&#9733;&#9733;&#9733;&#9733;&#9733;</a> rating to support continued development. Thanks a bunch!', 'dev-tasks-up' ),
         esc_url('https://revolut.me/mvalchev'),
         esc_url('https://wordpress.org/support/plugin/devtasksup/reviews/?rate=5#new-post')
-						);
+	);
+
+    $dvt_footer_text .= sprintf( __( ' | <a href="%s" target="_blank">Get support</a>', 'dev-tasks-up' ),
+        esc_url('https://wordpress.org/support/plugin/devtasksup/#new-post'),
+    );
 
 	return $dvt_footer_text;
 }
@@ -95,7 +99,7 @@ add_filter('admin_footer_text', 'dvt_footer_text');
 /**
  * Admin footer version
  *
- * @since 1.0.0
+ * @since 1.1.3
  */
 function dvt_footer_version($default) {
 
@@ -105,6 +109,6 @@ function dvt_footer_version($default) {
 		return $default;
 	}
 	
-	return 'DevtasksUp version ' . esc_html(DVT_VERSION_NUM);
+	return '<a href="https://translate.wordpress.org/projects/wp-plugins/devtasksup/" target="_blank"><span class="dashicons dashicons-translation"></span></a> DevtasksUp version ' . esc_html(DVT_VERSION_NUM);
 }
 add_filter( 'update_footer', 'dvt_footer_version', 11 );

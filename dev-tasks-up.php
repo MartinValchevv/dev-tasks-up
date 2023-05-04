@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) exit;
  * Description: The plugin integrates ClickUp into the admin for streamlined task management. Simply add an API key for full access to create tasks, leave comments, and view task priority. Ideal for developers to set up for clients for seamless task delegation.
  * Author: Martin Valchev
  * Author URI: https://martinvalchev.com/
- * Version: 1.1.2
+ * Version: 1.1.3
  * Text Domain: dev-tasks-up
  * Domain Path: /languages
  * License: GPL v2 - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
@@ -725,7 +725,7 @@ class DevTasksIntegration
     /**
      * Feedback when deactivate plugin view
      *
-     * @since 1.1.2
+     * @since 1.1.3
      */
     public function dvt_feedback_dialog() {
         ?>
@@ -830,7 +830,7 @@ class DevTasksIntegration
                 line-height: 1;
                 padding: 12px 20px;
                 font-size: 13px;
-                width: 180px;
+                min-width: 180px;
                 height: 38px;
                 border-width: 0;
                 font-weight: 500;
