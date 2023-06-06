@@ -3,6 +3,23 @@ if (!defined('ABSPATH')) exit;
 global $DevTasksIntegration;
 global $TaskCenter;
 $members = unserialize($DevTasksIntegration->getOption('List_members'));
+
+/** @since 1.2.0 Supported Custom Fields  */
+$supported_custom_fields = array(
+    'date',
+    'currency',
+    'email',
+    'text',
+    'short_text',
+    'emoji',
+    'attachment',
+    'checkbox',
+    'labels',
+    'phone',
+    'number',
+    'drop_down',
+    'url'
+);
 ?>
 <input id="task_id_transfer" type="hidden" value="">
 <div class="wrapper">
@@ -56,6 +73,88 @@ $members = unserialize($DevTasksIntegration->getOption('List_members'));
                                         <option value="1"><?php esc_html_e('Urgent', 'dev-tasks-up') ?></option>
                                     </select>
                                 </div>
+
+                                <?php
+                                $all_set_custom_fields = $TaskCenter->GetAccessibleCustomFields();
+                                ?>
+
+                                <?php if (!empty($all_set_custom_fields['fields'])) : ?>
+                                <div class="accordion" id="dvt_custom_field_accordion" style="margin-top: 2rem;">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingOne">
+                                            <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                                                    aria-expanded="false" aria-controls="collapseOne">
+                                                <?php esc_html_e('Custom fields', 'dev-tasks-up') ?>
+                                            </button>
+                                        </h2>
+                                        <div id="collapseOne" class="accordion-collapse collapse"
+                                             aria-labelledby="headingOne"
+                                             data-bs-parent="#dvt_custom_field_accordion">
+                                            <div class="accordion-body">
+                                                <?php foreach ($all_set_custom_fields['fields'] as $field) : ?>
+                                                <?php
+                                                    if (!in_array($field['type'], $supported_custom_fields)) {
+                                                      continue;
+                                                    }
+                                                ?>
+                                                <div class="dvt-cf-row">
+                                                    <div class="dvt-cf-field-name">
+                                                       <?php echo esc_attr($field['name'])?>
+                                                    </div>
+                                                    <div class="dvt-cf-field-value">
+                                                        <?php if ($field['type'] == 'email' ||  $field['type'] == 'date' || $field['type'] == 'short_text' || $field['type'] == 'phone' || $field['type'] == 'number' || $field['type'] == 'url' || $field['type'] == 'currency') :
+                                                                $fieldType = '';
+                                                                if ($field['type'] == 'phone') {
+                                                                    $fieldType = 'tel';
+                                                                } elseif ($field['type'] == 'short_text' ||  $field['type'] == 'currency') {
+                                                                    $fieldType = 'text';
+                                                                } else {
+                                                                    $fieldType = $field['type'];
+                                                                }
+                                                            ?>
+                                                            <input type="<?php echo esc_attr($fieldType);?>" id="<?php echo esc_attr($field['id'])?>" name="custom_fields[<?php echo esc_attr($field['type'])?>][<?php echo esc_attr($field['id'])?>]" class="form-control" <?php echo ($field['type'] == 'phone')? 'pattern="[0-9]+"' : '';?> <?php echo ($field['type'] == 'currency')? 'inputmode="numeric" pattern="[0-9,.]+" placeholder="'.$field['type_config']['currency_type'].'"' : '';?> <?php // echo ($field['required']?'required' : ''); ?> >
+                                                        <?php elseif ($field['type'] == 'text') : ?>
+                                                            <textarea class="form-control" id="<?php echo esc_attr($field['id'])?>" name="custom_fields[<?php echo esc_attr($field['type'])?>][<?php echo esc_attr($field['id'])?>]" rows="1"></textarea>
+                                                        <?php elseif ($field['type'] == 'checkbox') : ?>
+                                                            <input class="form-check-input" type="checkbox" value="1" id="<?php echo esc_attr($field['id'])?>" name="custom_fields[<?php echo esc_attr($field['type'])?>][<?php echo esc_attr($field['id'])?>]">
+                                                        <?php elseif ($field['type'] == 'drop_down') : ?>
+                                                            <select class="form-select" id="dvt-cf-dropdown" name="custom_fields[<?php echo esc_attr($field['type'])?>][<?php echo esc_attr($field['id'])?>]">
+                                                                <option value="-1" selected><?php esc_html_e('Select an option', 'dev-tasks-up') ?></option>
+                                                                <?php foreach ($field['type_config']['options'] as $option) : ?>
+                                                                <option value="<?php echo esc_attr($option['id'])?>"><?php echo esc_attr($option['name'])?></option>
+                                                                <?php endforeach; ?>
+                                                            </select>
+                                                        <?php elseif ($field['type'] == 'labels') : ?>
+                                                            <select class="form-select" id="dvt-cf-multi-dropdown" name="custom_fields[<?php echo esc_attr($field['type'])?>][<?php echo esc_attr($field['id'])?>][]" multiple aria-label="multiple select example">
+                                                                <?php foreach ($field['type_config']['options'] as $option) : ?>
+                                                                    <option value="<?php echo esc_attr($option['id'])?>" data-label-color="<?php echo esc_attr($option['color'])?>"><?php echo esc_attr($option['label'])?></option>
+                                                                <?php endforeach; ?>
+                                                            </select>
+                                                        <?php elseif ($field['type'] == 'attachment') : ?>
+                                                            <input type="file" class="form-control dvt-cf-custom-file-input" id="<?php echo esc_attr($field['id'])?>" name="custom_fields[<?php echo esc_attr($field['type'])?>][<?php echo esc_attr($field['id'])?>]" onchange="dvtUpdateLabel(this)">
+                                                            <label class="dvt-cf-custom-file-label" for="<?php echo esc_attr($field['id'])?>">
+                                                                <i class="fas fa-cloud-upload-alt"></i>  <?php esc_html_e('Choose file', 'dev-tasks-up') ?>
+                                                            </label>
+                                                        <?php elseif ($field['type'] == 'emoji') : ?>
+                                                        <div class="dvt-ratting-field-wrapper" id="<?php echo esc_attr($field['id'])?>">
+                                                            <?php $ratingIcon = '&#x'.$field['type_config']['code_point'].';' ?>
+                                                            <?php for ($i = 1; $i <= $field['type_config']['count']; $i++) : ?>
+                                                                <input type="radio" id="<?php echo esc_attr($field['id'])?>_<?php echo esc_attr($i)?>" name="custom_fields[<?php echo esc_attr($field['type'])?>][<?php echo esc_attr($field['id'])?>]" class="form-control" value="<?php echo esc_attr($i)?>">
+                                                                <label class="dvt-cf-star unselected" for="<?php echo esc_attr($field['id'])?>_<?php echo esc_attr($i)?>"><?php echo esc_attr($ratingIcon)?></label>
+                                                            <?php endfor; ?>
+                                                        </div>
+                                                        <?php endif; ?>
+                                                    </div>
+                                                </div>
+                                                <?php endforeach; ?>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php endif; ?>
+
                             </fieldset>
                             <?php
                             wp_nonce_field('create-save', 'create-message');
@@ -69,7 +168,7 @@ $members = unserialize($DevTasksIntegration->getOption('List_members'));
                 </div>
 
                 <div class="col-md-8">
-                    <div class="card" style="max-width: 100%; min-height: 593.7px; background-color: #eeeeee; overflow: auto; padding-left: 5px; padding-right: 5px;">
+                    <div class="card" style="max-width: 100%; <?php echo (!empty($all_set_custom_fields['fields']))?'min-height: 643.7px;':'min-height: 593.7px;' ?> background-color: #eeeeee; overflow: auto; padding-left: 5px; padding-right: 5px;">
 
                         <!--Loader-->
                         <div class="loader-overlay">
@@ -138,6 +237,17 @@ $members = unserialize($DevTasksIntegration->getOption('List_members'));
         $("#prioritySelect").select2({
             templateResult: formatStatePriority
         });
+
+        /** @since 1.2.0 Select2 integration for custom fields */
+        $(".dvt-cf-field-value select#dvt-cf-dropdown").select2({
+            minimumResultsForSearch: Infinity,
+        });
+
+        /** @since 1.2.0 Select2 multiple integration for custom fields */
+        $(".dvt-cf-field-value select#dvt-cf-multi-dropdown").select2({
+            minimumResultsForSearch: Infinity,
+            templateResult: formatStateMultipleLabels
+        });
     });
 
     function formatState (state) {
@@ -198,6 +308,27 @@ $members = unserialize($DevTasksIntegration->getOption('List_members'));
 
         var $state = jQuery(
             `<span><i class="${icon}" style="font-size: ${size}px; color: ${iconColor}"></i> ${state.text}</span>`
+        );
+
+        return $state;
+    };
+
+    function formatStateMultipleLabels (state) {
+        if (!state.id) {
+            return state.text;
+        }
+
+        var iconForColor;
+        var color = state.element.dataset.labelColor;
+
+        if (color) {
+            iconForColor = `<i class="fas fa-square" style="color: ${color}"></i>`
+        } else {
+            iconForColor = '';
+        }
+
+        var $state = jQuery(
+            `<span style="display: flex; justify-content: space-between; align-items: center;" >${state.text} ${iconForColor}</span>`
         );
 
         return $state;

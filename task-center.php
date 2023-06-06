@@ -13,13 +13,14 @@ class TaskCenter
     /**
      * Construct
      *
-     * @since 1.0.0
+     * @since 1.2.0
      */
     public function __construct()
     {
 
         add_action('admin_post_post_task', array($this, 'saveFormCreateTask'));
         add_action('dev_task_up_get_members_for_current_list', array($this, 'GetMembersCurrentList'));
+        add_action('dvt_get_accessible_custom_fields', array($this, 'GetAccessibleCustomFields'));
 
         add_action('wp_ajax_get_list_data', array($this, 'GetListData'));
         add_action('wp_ajax_nopriv_get_list_data',  array($this, 'GetListData'));
@@ -199,7 +200,7 @@ class TaskCenter
     /**
      * Save admin Task Center page
      *
-     * @since 1.1.0
+     * @since 1.2.0
      */
     public function saveFormCreateTask()
     {
@@ -211,6 +212,45 @@ class TaskCenter
 
 
         if (isset($_POST['create-task-form-save'])) {
+
+            // Custom fields logic
+            $custom_fields = array();
+            $custom_fields_for_send = array();
+
+            foreach ($_POST['custom_fields'] as $key => $fields) {
+
+                foreach ($fields as $keyID => $field) {
+
+                    if ($key == 'date') {
+                        $field = strtotime($field) * 1000; // Convert date to Unix epoch time in milliseconds
+                    }
+
+                    if (!empty($field) && $field != '-1') {
+                        $custom_fields[$key][$keyID] = $field;
+                    }
+                }
+
+            }
+
+            foreach ($custom_fields as $key => $field_val) {
+                foreach ($field_val as $id_field => $fl) {
+                    if ($key == 'date') {
+                        $custom_fields_for_send[] = array(
+                            'id' => $id_field,
+                            'value' => $fl,
+                            // 'value_options' => array(
+                            //    "time" => true
+                            //)
+                        );
+                    } else {
+                        $custom_fields_for_send[] = array(
+                            'id' => $id_field,
+                            'value' => $fl,
+                        );
+                    }
+                }
+            }
+            // END Custom fields logic
 
             $listId = $this->getOption('List_ID');
 
@@ -237,7 +277,7 @@ class TaskCenter
                 "parent" => NULL,
                 "links_to" => NULL,
                 "check_required_custom_fields" => true,
-                "custom_fields" => array()
+                "custom_fields" => $custom_fields_for_send
             );
 
             $headers = array(
@@ -257,7 +297,16 @@ class TaskCenter
             if (is_wp_error($response)) {
                 echo $response->get_error_message();
             } else {
-                echo wp_remote_retrieve_body($response);
+                // echo wp_remote_retrieve_body($response);
+                $json_response = json_decode( $response['body'], true );
+
+                if (isset($json_response['err'])) {
+                    // Store error in session
+                    $_SESSION['API_error'] = $json_response['err'];
+                } else {
+                    echo wp_remote_retrieve_body($response);
+                }
+
             }
 
         }
@@ -397,6 +446,28 @@ class TaskCenter
 
             update_option('devt-connect-data', json_encode($data));
         }
+
+    }
+
+
+    /**
+     * Get Accessible Custom Fields
+     *
+     * @since 1.2.0
+     */
+    public function GetAccessibleCustomFields() {
+
+        $url = "https://api.clickup.com/api/v2/list/".$this->getOption('List_ID')."/field";
+        $headers = array(
+            'Authorization' => base64_decode($this->getOption('API_token')),
+            'Content-Type' => 'application/json'
+        );
+        $response = wp_remote_get( $url, array(
+            'headers' => $headers
+        ));
+        $json_response = json_decode(wp_remote_retrieve_body($response), true);
+
+        return $json_response;
 
     }
 

@@ -109,6 +109,48 @@ jQuery( document ).ready(function($) {
         $('[name="chosen_list"]').val(`${optionSelected.val()},${optionSelected.text()}`)
     });
 
+    /** @since 1.2.0 add custom class for style dropdown select2 when open select  */
+    $('#dvt-cf-dropdown').on('select2:open', function() {
+        $('#select2-dvt-cf-dropdown-results').closest('.select2-dropdown').addClass('dvt-cf-custom-style-select2')
+    });
+
+    /** @since 1.2.0 add custom class for style dropdown select2 when open select  */
+    $('#dvt-cf-multi-dropdown').on('select2:open', function() {
+        $('#select2-dvt-cf-multi-dropdown-results').closest('.select2-dropdown').addClass('dvt-cf-custom-style-select2')
+    });
+
+    /** @since 1.2.0 custom field ratting hover function  */
+    $('.dvt-cf-star').hover(
+        function(e) {
+            $(this).removeClass('unselected');
+            $(this).prevAll().removeClass('unselected');
+        },
+        function() {
+            $(this).addClass('unselected');
+            $(this).prevAll().addClass('unselected');
+        }
+    );
+
+    /** @since 1.2.0 custom field function onchange for fields  */
+    $('#dvt_custom_field_accordion .dvt-cf-field-value input[type="radio"]').change(function() {
+        var wrapperID = $(this).closest('.dvt-ratting-field-wrapper').attr('id')
+
+        if ($(this).is(':checked') ) {
+            $(this).next(`label.dvt-cf-star`).addClass('dvt-checked');
+            $(this).next(`label.dvt-cf-star`).prevAll(`label.dvt-cf-star`).addClass('dvt-checked');
+            $(this).next(`label.dvt-cf-star`).removeClass('unselected');
+            $(this).next(`label.dvt-cf-star`).prevAll(`label.dvt-cf-star`).removeClass('unselected');
+            $(`#${wrapperID} .dvt-cf-star`).off('mouseenter mouseleave');
+            $(`#${wrapperID} i`).remove()
+            $(`#${wrapperID}`).append(`<i onclick="resetRatting('${wrapperID}')"  style="float: right;position: relative;top: 10px; color: red;" class="fas fa-times-circle"></i>`)
+
+            // $(`#${wrapperID} input[type="radio"]`).prop('disabled', true);
+        } else {
+            $(this).next(`label.dvt-cf-star`).removeClass('dvt-checked');
+            $(this).next(`label.dvt-cf-star`).prevAll(`label.dvt-cf-star`).removeClass('dvt-checked');
+        }
+    });
+
 
     // Check plugin page position for load scripts
     if (translate_obj.current_url_plugin === 'toplevel_page_dev-tasks-admin-page' && translate_obj.settings_valid !== 'invalid' && (translate_obj.choose_list === 'Yes' || translate_obj.flexSwitchCheckDefault_createWorkspace === 'Yes')) {
@@ -140,7 +182,7 @@ jQuery( document ).ready(function($) {
             }
         });
 
-        /** @since 1.0.0 Ajax get all tasks  */
+        /** @since 1.2.0 Ajax get all tasks  */
         $.ajax({
             method: 'GET',
             url: ajaxurl,
@@ -162,6 +204,7 @@ jQuery( document ).ready(function($) {
             var showBG
             var username
             var time_spent
+            var flagIcon
 
             for (var task of response.tasks) {
 
@@ -193,7 +236,9 @@ jQuery( document ).ready(function($) {
                 }
 
                 if (task.priority) {
-                    var flagIcon = `<i class="fa fa-flag" style="font-size: 12px; color: ${task.priority.color}" title="${task.priority.priority}"></i>`
+                    flagIcon = `<i class="fa fa-flag" style="font-size: 12px; color: ${task.priority.color}" title="${task.priority.priority}"></i>`
+                } else {
+                    flagIcon = `<i class="fa fa-flag" style="visibility: hidden; font-size: 12px;"></i>`
                 }
 
 
@@ -205,7 +250,7 @@ jQuery( document ).ready(function($) {
                     var seconds = (Math.floor(duration.asSeconds() % 60)).toString().padStart(2, "0");
                     time_spent = `<div style="font-size: 12px;">${hours}:${minutes}:${seconds}</div>`
                 } else {
-                    time_spent = ''
+                    time_spent = '<div style="visibility: hidden; font-size: 12px;">none</div>'
                 }
 
                 $(`.status__${task.status.status.replace(" ", "_")}`)
@@ -484,5 +529,36 @@ function removeSettings() {
             jQuery('#choose_list').click()
             jQuery('#submit').click()
         }
+    })
+}
+
+/** @since 1.2.0 function for update label with name from attached file  */
+function dvtUpdateLabel(input) {
+    var fileName = input.files[0].name;
+    var label = input.nextElementSibling;
+    label.innerHTML = fileName;
+}
+
+/** @since 1.2.0 function for reset ratting fields  */
+function resetRatting(id) {
+    jQuery(`#${id} input[type="radio"]`).each(function() {
+        jQuery(this).prop('checked', false);
+        jQuery(this).next(`label.dvt-cf-star`).addClass('unselected');
+        jQuery(this).next(`label.dvt-cf-star`).removeClass('dvt-checked');
+
+        jQuery(`#${id} .dvt-cf-star`).hover(
+            function(e) {
+                jQuery(this).removeClass('unselected');
+                jQuery(this).prevAll().removeClass('unselected');
+            },
+            function() {
+                jQuery(this).addClass('unselected');
+                jQuery(this).prevAll().addClass('unselected');
+            }
+        );
+
+        // jQuery(`#${id} input[type="radio"]`).prop('disabled', false);
+
+        jQuery(`#${id} i`).remove()
     })
 }

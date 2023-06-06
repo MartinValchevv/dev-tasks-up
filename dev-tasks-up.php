@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) exit;
  * Description: The plugin integrates ClickUp into the admin for streamlined task management. Simply add an API key for full access to create tasks, leave comments, and view task priority. Ideal for developers to set up for clients for seamless task delegation.
  * Author: Martin Valchev
  * Author URI: https://martinvalchev.com/
- * Version: 1.1.3
+ * Version: 1.2.0
  * Text Domain: dev-tasks-up
  * Domain Path: /languages
  * License: GPL v2 - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) exit;
  *
  * @since 1.1.1
  */
-if ( ! defined( 'DVT_VERSION_NUM' ) ) 		    define( 'DVT_VERSION_NUM'		, '1.1.2' ); // Plugin version constant
+if ( ! defined( 'DVT_VERSION_NUM' ) ) 		    define( 'DVT_VERSION_NUM'		, '1.2.0' ); // Plugin version constant
 if ( ! defined( 'DVT_STARTER_PLUGIN' ) )		define( 'DVT_STARTER_PLUGIN'		, trim( dirname( plugin_basename( __FILE__ ) ), '/' ) ); // Name of the plugin folder eg - 'dev-tasks-up'
 if ( ! defined( 'DVT_STARTER_PLUGIN_DIR' ) )	define( 'DVT_STARTER_PLUGIN_DIR'	, plugin_dir_path( __FILE__ ) ); // Plugin directory absolute path with the trailing slash. Useful for using with includes eg - /var/www/html/wp-content/plugins/dev-tasks-up/
 if ( ! defined( 'DVT_STARTER_PLUGIN_URL' ) )	define( 'DVT_STARTER_PLUGIN_URL'	, plugin_dir_url( __FILE__ ) ); // URL to the plugin folder with the trailing slash. Useful for referencing src eg - http://localhost/wp/wp-content/plugins/dev-tasks-up/
@@ -36,7 +36,7 @@ class DevTasksIntegration
     /**
      * Construct
      *
-     * @since 1.1.2
+     * @since 1.2.0
      */
     public function __construct()
     {
@@ -51,6 +51,7 @@ class DevTasksIntegration
         add_action('admin_notices', array($this, 'errorNotices'));
         add_action( 'init',  array($this, 'dev_task_up_start_session' ));
         add_action( 'admin_footer-plugins.php',  array($this, 'dvt_feedback_dialog' ));
+        add_action( 'init',  array($this, 'dvt_capability' ));
 
         add_action('wp_ajax_select_workspace', array($this, 'selectWorkspace'));
         add_action('wp_ajax_nopriv_select_workspace',  array($this, 'selectWorkspace'));
@@ -62,11 +63,21 @@ class DevTasksIntegration
         // add_shortcode('dev-tasks-plugin', array($this, 'shortcodeAction'));
     }
 
+    /**
+     * Create capability for administrator
+     *
+     * @since 1.2.0
+     */
+    public function dvt_capability() {
+        $role = get_role('administrator');
+        $role->add_cap('dev_tasks_up_admin_capability');
+    }
+
 
     /**
      * Admin menu added
      *
-     * @since 1.0.0
+     * @since 1.2.0
      */
     public function adminMenu()
     {
@@ -81,10 +92,10 @@ class DevTasksIntegration
             10,
         );
 
-        if( current_user_can('administrator') ) {
+        if( current_user_can('dev_tasks_up_admin_capability') ) {
             add_submenu_page("dev-tasks-admin-page",  __( 'Settings', 'dev-tasks-up' ), __( 'Settings', 'dev-tasks-up' ), 'manage_options', "dev-tasks-settings", array($this, 'renderPageSettings'));
+            $submenu['dev-tasks-admin-page'][0][0] = __( 'Task Center', 'dev-tasks-up' );
         }
-        $submenu['dev-tasks-admin-page'][0][0] = __( 'Task Center', 'dev-tasks-up' );
 
     }
 

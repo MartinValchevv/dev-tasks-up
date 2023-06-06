@@ -5,7 +5,7 @@ Tags: dev, task, projects, ClickUp, integration, admin ,task management, tasks, 
 Requires at least: 5.3
 Tested up to: 6.2
 Requires PHP: 7.4
-Stable tag: 1.1.3
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,6 +20,7 @@ The options for this plugin include:
 *   Integration of ClickUp into the admin
 *   Configuration using an API key on your account
 *   Task creation
+*   Create task and create custom fields if configured (supports 13 types of fields)
 *   Comment writing
 *   Viewing the most important aspect of a task
 *   Customization by developers for their clients
@@ -37,6 +38,7 @@ Notes:
 
 *   In order for the plugin to work correctly, it must be configured from an admin account
 *   The corresponding Api key must be filled in, upon successful connection, it is mandatory to choose whether you want to configure it in a new environment or in a current one
+*   If you want to use custom fields, they must be configured from Click Up, if they are configured, the field option will be displayed when you create a task
 
 == Installation ==
 
@@ -56,14 +58,34 @@ You can configure the plugin by adding an API key to your account.
 You can create tasks, write comments, and view the most important aspects of a task.
 = Who is this plugin suitable for? =
 This plugin is ideal for developers who want to set it up for their clients and delegate tasks directly.
+= Does it support custom fields to Click up? =
+Yes, it supports 13 types of fields:
+*  URL Custom Field
+*  Dropdown Custom Field
+*  Email Custom Field
+*  Phone Custom Field
+*  Date Custom Field
+*  Short Text Custom Field
+*  Long Text Custom Field
+*  Number Custom Field
+*  Money Custom Field
+*  Emoji (Rating) Custom Field
+*  Label Custom Field
+*  Attachment Custom Field
+*  Checkbox Custom Field
 
 == Screenshots ==
 
 1. Settings
 2. Task Center
 3. Opened Task
+4. Create Task - custom fields
 
 == Changelog ==
+
+= 1.2.0 =
+* Bug fixes with capability
+* Add Support 13 types custom fields for Click Up, when creating task (URL Custom Field, Dropdown Custom Field, Email Custom Field, Phone Custom Field, Date Custom Field, Short Text Custom Field, Long Text Custom Field, Number Custom Field, Money Custom Field, Emoji (Rating) Custom Field, Label Custom Field, Attachment Custom Field, Checkbox Custom Field )
 
 = 1.1.3 =
 * Visual fixes
@@ -101,6 +123,9 @@ This plugin is ideal for developers who want to set it up for their clients and 
 
 
 == Upgrade Notice ==
+
+= 1.2.0 =
+* Add Support 13 types custom fields for Click Up, when creating task (URL Custom Field, Dropdown Custom Field, Email Custom Field, Phone Custom Field, Date Custom Field, Short Text Custom Field, Long Text Custom Field, Number Custom Field, Money Custom Field, Emoji (Rating) Custom Field, Label Custom Field, Attachment Custom Field, Checkbox Custom Field )
 
 = 1.1.2 =
 * Tested with WordPress 6.2

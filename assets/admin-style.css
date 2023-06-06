@@ -335,6 +335,171 @@ em {
     display: none;
 }
 
+#dvt_custom_field_accordion .accordion-button {
+    height: 34px;
+    padding: 8px;
+}
+
+#dvt_custom_field_accordion .accordion-body {
+    padding: 0px;
+}
+
+#dvt_custom_field_accordion .dvt-cf-row {
+    border-bottom: 1px solid #e9ebf0;
+    display: flex;
+    width: 100%;
+}
+
+#dvt_custom_field_accordion .dvt-cf-row:last-child {
+    border-bottom: 0;
+}
+
+#dvt_custom_field_accordion .dvt-cf-field-name {
+    width: 100%;
+    padding: 0 8px;
+    min-height: 33px;
+    line-height: 31px;
+    word-break: break-word;
+    overflow: hidden;
+}
+
+#dvt_custom_field_accordion .dvt-cf-field-value {
+    width: 100%;
+    border-left: 1px solid #e9ebf0;
+    padding: 0 8px;
+    min-height: 33px;
+    line-height: 31px;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+#dvt_custom_field_accordion .dvt-cf-field-value input {
+    height: 100%;
+}
+
+
+#dvt_custom_field_accordion .dvt-cf-field-value input[type=date],
+#dvt_custom_field_accordion .dvt-cf-field-value input[type=email],
+#dvt_custom_field_accordion .dvt-cf-field-value input[type=number],
+#dvt_custom_field_accordion .dvt-cf-field-value input[type=tel],
+#dvt_custom_field_accordion .dvt-cf-field-value input[type=text],
+#dvt_custom_field_accordion .dvt-cf-field-value input[type=url],
+#dvt_custom_field_accordion .dvt-cf-field-value input[type=date]:focus,
+#dvt_custom_field_accordion .dvt-cf-field-value input[type=email]:focus,
+#dvt_custom_field_accordion .dvt-cf-field-value input[type=number]:focus,
+#dvt_custom_field_accordion .dvt-cf-field-value input[type=tel]:focus,
+#dvt_custom_field_accordion .dvt-cf-field-value input[type=text]:focus,
+#dvt_custom_field_accordion .dvt-cf-field-value input[type=url]:focus {
+    border: 0;
+    outline: 0;
+    width: 100%;
+    padding: 0;
+    box-shadow: none;
+    line-height: normal;
+    min-height: auto;
+}
+
+#dvt_custom_field_accordion .dvt-cf-field-value textarea,
+#dvt_custom_field_accordion .dvt-cf-field-value textarea:focus {
+    border: 0;
+    outline: 0;
+    width: 100%;
+    padding: 0;
+    box-shadow: none;
+    line-height: normal;
+}
+
+
+#dvt_custom_field_accordion .dvt-cf-field-value input[type=date].form-control.is-valid, #dvt_custom_field_accordion .dvt-cf-field-value input[type=date].form-control:valid {
+    background-position: right calc(1.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+#dvt_custom_field_accordion .dvt-cf-field-value input[type=date].form-control.is-invalid, #dvt_custom_field_accordion .dvt-cf-field-value input[type=date].form-control:invalid {
+    background-position: right calc(1.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+#dvt_custom_field_accordion .dvt-cf-field-value .select2-container--default .select2-selection--multiple, #dvt_custom_field_accordion .dvt-cf-field-value .select2-container--default .select2-selection--single {
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+.dvt-cf-custom-style-select2 {
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    border: 0 !important;
+    border-radius: 10px !important;
+}
+
+#select2-dvt-cf-dropdown-results .select2-results__option--selected:first-child,
+#select2-dvt-cf-dropdown-results .select2-results__option--highlighted:first-child,
+#select2-dvt-cf-multi-dropdown-results .select2-results__option--selected:first-child,
+#select2-dvt-cf-multi-dropdown-results .select2-results__option--highlighted:first-child {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+
+#dvt_custom_field_accordion .dvt-cf-field-value input[type=checkbox] {
+    height: 1em;
+    margin-top: .5em;
+}
+#dvt_custom_field_accordion .dvt-cf-field-value input[type=radio] {
+    width: 1em;
+    height: 1em;
+    margin-top: .5em;
+    margin-left: 3px;
+}
+
+#dvt_custom_field_accordion .dvt-cf-field-value:hover {
+    outline: 2px solid #e9ebf0;
+}
+
+.dvt-cf-custom-file-input {
+    opacity: 0;
+    width: 0.1px;
+    height: 0.1px;
+    position: absolute;
+    overflow: hidden;
+    z-index: -1;
+}
+
+/* Style the label to resemble an icon */
+.dvt-cf-custom-file-label {
+    display: inline-block;
+    /*padding: 0px 20px;*/
+    font-size: 14px;
+    font-weight: bold;
+    color: #212529;
+    /*background-color: #007bff;*/
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.dvt-cf-field-value input[type="radio"] {
+    /*display: none;*/
+    position: absolute;
+    visibility: hidden;
+    z-index: 11;
+}
+
+/* Style the label as a star */
+label.dvt-cf-star {
+    display: inline-block;
+    /*width: 30px;*/
+    /*height: 30px;*/
+    cursor: pointer;
+    /*font-size: 24px;*/
+    z-index: 10;
+}
+
+label.dvt-cf-star.unselected {
+    opacity: .5;
+    filter: grayscale(100%);
+}
+
+
+
 @media screen and (max-width: 480px) {
     .banner-wrapper-taskpage {
        display: none;

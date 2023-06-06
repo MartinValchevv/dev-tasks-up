@@ -298,3 +298,12 @@ msgstr ""
 
 msgid "Deactivating..."
 msgstr ""
+
+msgid "Custom fields"
+msgstr ""
+
+msgid "Select an option"
+msgstr ""
+
+msgid "Choose file"
+msgstr ""
