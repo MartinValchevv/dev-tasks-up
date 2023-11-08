@@ -3,7 +3,7 @@ Contributors: martinvalchev
 Donate link: https://revolut.me/mvalchev
 Tags: dev, task, projects, ClickUp, integration, admin ,task management, tasks, task priority, developers, clients
 Requires at least: 5.3
-Tested up to: 6.3
+Tested up to: 6.4
 Requires PHP: 7.4
 Stable tag: 1.2.0
 License: GPLv2 or later
