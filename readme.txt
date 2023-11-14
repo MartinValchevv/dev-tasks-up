@@ -5,7 +5,7 @@ Tags: dev, task, projects, ClickUp, integration, admin ,task management, tasks, 
 Requires at least: 5.3
 Tested up to: 6.4
 Requires PHP: 7.4
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -31,7 +31,7 @@ The helper libraries plugin uses the following:
 *   [Bootstrap v5.2](https://getbootstrap.com/docs/5.2/getting-started/introduction/)
 *   [FontAwesome v5](https://fontawesome.com/)
 *   [Select2](https://select2.org/)
-*   [SweetAlert2 v11.7.10](https://sweetalert2.github.io/)
+*   [SweetAlert2 v11.4.8](https://sweetalert2.github.io/)
 *   [ClickUP API](https://clickup.com/api/)
 
 Notes:
@@ -82,6 +82,9 @@ Yes, it supports 13 types of fields:
 4. Create Task - custom fields
 
 == Changelog ==
+
+= 1.2.2 =
+* Changed version SweetAlert2 to v11.4.8
 
 = 1.2.1 =
 * Changed version SweetAlert to v11.7.10
