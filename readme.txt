@@ -3,9 +3,9 @@ Contributors: martinvalchev
 Donate link: https://revolut.me/mvalchev
 Tags: dev, task, projects, ClickUp, integration, admin ,task management, tasks, task priority, developers, clients
 Requires at least: 5.3
-Tested up to: 6.4
+Tested up to: 6.4.3
 Requires PHP: 7.4
-Stable tag: 1.2.2
+Stable tag: 1.2.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -82,6 +82,9 @@ Yes, it supports 13 types of fields:
 4. Create Task - custom fields
 
 == Changelog ==
+
+= 1.2.3 =
+* Stop function for feed back when deactivate plugin
 
 = 1.2.2 =
 * Changed version SweetAlert2 to v11.4.8

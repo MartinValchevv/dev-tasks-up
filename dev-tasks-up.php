@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) exit;
  * Description: The plugin integrates ClickUp into the admin for streamlined task management. Simply add an API key for full access to create tasks, leave comments, and view task priority. Ideal for developers to set up for clients for seamless task delegation.
  * Author: Martin Valchev
  * Author URI: https://martinvalchev.com/
- * Version: 1.2.2
+ * Version: 1.2.3
  * Text Domain: dev-tasks-up
  * Domain Path: /languages
  * License: GPL v2 - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) exit;
  *
  * @since 1.1.1
  */
-if ( ! defined( 'DVT_VERSION_NUM' ) ) 		    define( 'DVT_VERSION_NUM'		, '1.2.2' ); // Plugin version constant
+if ( ! defined( 'DVT_VERSION_NUM' ) ) 		    define( 'DVT_VERSION_NUM'		, '1.2.3' ); // Plugin version constant
 if ( ! defined( 'DVT_STARTER_PLUGIN' ) )		define( 'DVT_STARTER_PLUGIN'		, trim( dirname( plugin_basename( __FILE__ ) ), '/' ) ); // Name of the plugin folder eg - 'dev-tasks-up'
 if ( ! defined( 'DVT_STARTER_PLUGIN_DIR' ) )	define( 'DVT_STARTER_PLUGIN_DIR'	, plugin_dir_path( __FILE__ ) ); // Plugin directory absolute path with the trailing slash. Useful for using with includes eg - /var/www/html/wp-content/plugins/dev-tasks-up/
 if ( ! defined( 'DVT_STARTER_PLUGIN_URL' ) )	define( 'DVT_STARTER_PLUGIN_URL'	, plugin_dir_url( __FILE__ ) ); // URL to the plugin folder with the trailing slash. Useful for referencing src eg - http://localhost/wp/wp-content/plugins/dev-tasks-up/
@@ -36,7 +36,7 @@ class DevTasksIntegration
     /**
      * Construct
      *
-     * @since 1.2.0
+     * @since 1.2.3
      */
     public function __construct()
     {
@@ -57,8 +57,8 @@ class DevTasksIntegration
         add_action('wp_ajax_nopriv_select_workspace',  array($this, 'selectWorkspace'));
         add_action('wp_ajax_select_folder', array($this, 'selectFolder'));
         add_action('wp_ajax_nopriv_select_folder',  array($this, 'selectFolder'));
-        add_action('wp_ajax_dvt_send_deactivation_feedback_email', array($this, 'dvt_send_deactivation_email'));
-        add_action('wp_ajax_nopriv_dvt_send_deactivation_feedback_email',  array($this, 'dvt_send_deactivation_email'));
+        // add_action('wp_ajax_dvt_send_deactivation_feedback_email', array($this, 'dvt_send_deactivation_email'));
+        // add_action('wp_ajax_nopriv_dvt_send_deactivation_feedback_email',  array($this, 'dvt_send_deactivation_email'));
 
         // add_shortcode('dev-tasks-plugin', array($this, 'shortcodeAction'));
     }
@@ -123,7 +123,7 @@ class DevTasksIntegration
     /**
      * Add Admin scripts and styles
      *
-     * @since 1.1.2
+     * @since 1.2.3
      */
     public function dev_tasks_admin_styles($hook) {
 
@@ -144,9 +144,9 @@ class DevTasksIntegration
 
         }
 
-        if ($hook == "plugins.php") {
-            wp_enqueue_script( 'dvt-feedback', plugins_url( 'assets/js/feedback.js', __FILE__ ), '', DVT_VERSION_NUM );
-        }
+//        if ($hook == "plugins.php") {
+//            wp_enqueue_script( 'dvt-feedback', plugins_url( 'assets/js/feedback.js', __FILE__ ), '', DVT_VERSION_NUM );
+//        }
 
         $translation_array = array(
             'current_url_plugin' => $screen->base,
