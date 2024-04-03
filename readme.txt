@@ -1,7 +1,7 @@
 === DevtasksUp - ClickUp integration ===
 Contributors: martinvalchev
 Donate link: https://revolut.me/mvalchev
-Tags: dev, task, projects, ClickUp, integration, admin ,task management, tasks, task priority, developers, clients
+Tags: ClickUp, integration, admin, task management, clients
 Requires at least: 5.3
 Tested up to: 6.5
 Requires PHP: 7.4
@@ -9,7 +9,7 @@ Stable tag: 1.2.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-The plugin integrates ClickUp into the admin for streamlined task management. Simply add an API key for full access to create tasks, leave comments, and view task priority. Ideal for developers to set up for clients for seamless task delegation.
+The plugin integrates ClickUp into admin for streamlined task management. Add API key for full access: create tasks, leave comments, view priority.
 
 == Description ==
 
