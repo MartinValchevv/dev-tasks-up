@@ -155,7 +155,7 @@ jQuery( document ).ready(function($) {
     // Check plugin page position for load scripts
     if (translate_obj.current_url_plugin === 'toplevel_page_dev-tasks-admin-page' && translate_obj.settings_valid !== 'invalid' && (translate_obj.choose_list === 'Yes' || translate_obj.flexSwitchCheckDefault_createWorkspace === 'Yes')) {
 
-        /** @since 1.0.0 Ajax get list all data  */
+        /** @since 1.2.4 Ajax get list all data  */
         $.ajax({
             method: 'GET',
             url: ajaxurl,
@@ -169,6 +169,7 @@ jQuery( document ).ready(function($) {
             },
             complete: function () {
                 $('.loader-overlay').hide()
+                startGetAllTasks();
             }
         }).success(function (response) {
             for (const status of response.statuses) {
@@ -182,7 +183,9 @@ jQuery( document ).ready(function($) {
             }
         });
 
-        /** @since 1.2.0 Ajax get all tasks  */
+
+    /** @since 1.2.4 Ajax get all tasks  */
+    function startGetAllTasks() {
         $.ajax({
             method: 'GET',
             url: ajaxurl,
@@ -311,6 +314,7 @@ jQuery( document ).ready(function($) {
             console.log('Err')
             console.log(response)
         });
+    }
 
         /** @since 1.0.0 Ajax post task id on click  */
         $(document).on('click', '.card.task_wrapper', function () {
