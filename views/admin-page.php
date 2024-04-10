@@ -35,6 +35,7 @@ $supported_custom_fields = array(
                               class="needs-validation" novalidate>
                             <input type="hidden" name="create-task-form-save" value="post_task"/>
                             <fieldset>
+                                <input type="hidden" id="status-to-create-task" name="status-to-create-task" value=""/>
                                 <legend><?php esc_html_e('Create Task', 'dev-tasks-up') ?></legend>
                                 <div class="mb-3">
                                     <label for="task-name" class="form-label"><?php esc_html_e('Summary', 'dev-tasks-up') ?><em>*</em></label>

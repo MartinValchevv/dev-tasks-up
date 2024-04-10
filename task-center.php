@@ -200,7 +200,7 @@ class TaskCenter
     /**
      * Save admin Task Center page
      *
-     * @since 1.2.0
+     * @since 1.2.5
      */
     public function saveFormCreateTask()
     {
@@ -266,7 +266,7 @@ class TaskCenter
                     sanitize_text_field($_POST['assigneeSelect'])
                 ),
                 "tags" => array(),
-                "status" => "TO DO",
+                "status" => sanitize_text_field($_POST['status-to-create-task']),
                 "priority" => sanitize_text_field($_POST['prioritySelect']),
                 "due_date" => null,
                 "due_date_time" => false,

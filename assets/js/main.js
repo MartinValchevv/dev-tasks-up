@@ -155,7 +155,7 @@ jQuery( document ).ready(function($) {
     // Check plugin page position for load scripts
     if (translate_obj.current_url_plugin === 'toplevel_page_dev-tasks-admin-page' && translate_obj.settings_valid !== 'invalid' && (translate_obj.choose_list === 'Yes' || translate_obj.flexSwitchCheckDefault_createWorkspace === 'Yes')) {
 
-        /** @since 1.2.4 Ajax get list all data  */
+        /** @since 1.2.5 Ajax get list all data  */
         $.ajax({
             method: 'GET',
             url: ajaxurl,
@@ -174,17 +174,20 @@ jQuery( document ).ready(function($) {
         }).success(function (response) {
             for (const status of response.statuses) {
                 $('.row.flex-nowrap').append(`
-                  <div class="col-md-4 status__${status.status.replace(" ", "_")}" id="${status.id}">
+                  <div class="col-md-4 status__${status.status.replace(/ /g, "_")}" id="${status.id}">
                      <div class="card card__task" style="border-top-color: ${status.color}">
                         ${status.status}
                      </div>
                   </div>
             `)
+             if (status.orderindex === 0) {
+                 $('#status-to-create-task').val(status.status)
+             }
             }
         });
 
 
-    /** @since 1.2.4 Ajax get all tasks  */
+    /** @since 1.2.5 Ajax get all tasks  */
     function startGetAllTasks() {
         $.ajax({
             method: 'GET',
@@ -256,7 +259,7 @@ jQuery( document ).ready(function($) {
                     time_spent = '<div style="visibility: hidden; font-size: 12px;">none</div>'
                 }
 
-                $(`.status__${task.status.status.replace(" ", "_")}`)
+                $(`.status__${task.status.status.replace(/ /g, "_")}`)
                     .append(`
          
                    <div class="card task_wrapper" id="${task.id}" type="button" data-bs-toggle="modal" data-bs-target="#taskModal_${task.id}">
