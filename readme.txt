@@ -5,7 +5,7 @@ Tags: ClickUp, integration, admin, task management, clients
 Requires at least: 5.3
 Tested up to: 6.5
 Requires PHP: 7.4
-Stable tag: 1.2.5
+Stable tag: 1.2.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -82,6 +82,10 @@ Yes, it supports 13 types of fields:
 4. Create Task - custom fields
 
 == Changelog ==
+
+= 1.2.6 =
+* **Fix:** Bug with session
+**Release date: May 09, 2024**
 
 = 1.2.5 =
 * **Fix:** Problem with status when create task

@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) exit;
  * Description: The plugin integrates ClickUp into the admin for streamlined task management. Simply add an API key for full access to create tasks, leave comments, and view task priority. Ideal for developers to set up for clients for seamless task delegation.
  * Author: Martin Valchev
  * Author URI: https://martinvalchev.com/
- * Version: 1.2.5
+ * Version: 1.2.6
  * Text Domain: dev-tasks-up
  * Domain Path: /languages
  * License: GPL v2 - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) exit;
  *
  * @since 1.1.1
  */
-if ( ! defined( 'DVT_VERSION_NUM' ) ) 		    define( 'DVT_VERSION_NUM'		, '1.2.5' ); // Plugin version constant
+if ( ! defined( 'DVT_VERSION_NUM' ) ) 		    define( 'DVT_VERSION_NUM'		, '1.2.6' ); // Plugin version constant
 if ( ! defined( 'DVT_STARTER_PLUGIN' ) )		define( 'DVT_STARTER_PLUGIN'		, trim( dirname( plugin_basename( __FILE__ ) ), '/' ) ); // Name of the plugin folder eg - 'dev-tasks-up'
 if ( ! defined( 'DVT_STARTER_PLUGIN_DIR' ) )	define( 'DVT_STARTER_PLUGIN_DIR'	, plugin_dir_path( __FILE__ ) ); // Plugin directory absolute path with the trailing slash. Useful for using with includes eg - /var/www/html/wp-content/plugins/dev-tasks-up/
 if ( ! defined( 'DVT_STARTER_PLUGIN_URL' ) )	define( 'DVT_STARTER_PLUGIN_URL'	, plugin_dir_url( __FILE__ ) ); // URL to the plugin folder with the trailing slash. Useful for referencing src eg - http://localhost/wp/wp-content/plugins/dev-tasks-up/
@@ -36,7 +36,7 @@ class DevTasksIntegration
     /**
      * Construct
      *
-     * @since 1.2.3
+     * @since 1.2.6
      */
     public function __construct()
     {
@@ -49,7 +49,7 @@ class DevTasksIntegration
         add_action('dev_task_up_inNewWorkspaceFolderCreateList', array($this, 'inNewWorkspaceFolderCreateList'));
         add_action('dev_task_up_getWorkspaces', array($this, 'getWorkspaces'));
         add_action('admin_notices', array($this, 'errorNotices'));
-        add_action( 'init',  array($this, 'dev_task_up_start_session' ));
+//        add_action( 'init',  array($this, 'dev_task_up_start_session' ));
         add_action( 'admin_footer-plugins.php',  array($this, 'dvt_feedback_dialog' ));
         add_action( 'init',  array($this, 'dvt_capability' ));
 
@@ -388,7 +388,7 @@ class DevTasksIntegration
     /**
      * Create Workspace from settings
      *
-     * @since 1.0.1
+     * @since 1.2.6
      */
     public function createWorkspace ($data) {
 
@@ -445,6 +445,8 @@ class DevTasksIntegration
             'headers' => $headers,
             'body' => json_encode($body)
         );
+
+        session_write_close();
 
         $response = wp_remote_post( $url, $args );
 
@@ -697,11 +699,11 @@ class DevTasksIntegration
      *
      * @since 1.1.1
      */
-    public function dev_task_up_start_session() {
-        if ( ! session_id() ) {
-            session_start();
-        }
-    }
+//    public function dev_task_up_start_session() {
+//        if ( ! session_id() ) {
+//            session_start();
+//        }
+//    }
 
     /**
      * Add error alert return from ClickUp API
