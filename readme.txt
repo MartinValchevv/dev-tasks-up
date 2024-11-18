@@ -3,7 +3,7 @@ Contributors: martinvalchev
 Donate link: https://revolut.me/mvalchev
 Tags: ClickUp, integration, admin, task management, clients
 Requires at least: 5.3
-Tested up to: 6.5
+Tested up to: 6.7
 Requires PHP: 7.4
 Stable tag: 1.2.6
 License: GPLv2 or later
