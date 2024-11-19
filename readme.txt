@@ -84,7 +84,7 @@ Yes, it supports 13 types of fields:
 == Changelog ==
 
 = 1.2.7 =
-* **Added:** Fatal Error with admin notices
+* **Added:** New donate link
 * Tested with WordPress 6.7
 **Release date: November 19, 2024**
 
