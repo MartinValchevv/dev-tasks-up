@@ -52,12 +52,12 @@ add_filter( 'plugin_action_links_' . DVT_STARTER_PLUGIN . '/dev-tasks-up.php', '
 /**
  * Add donate and other links to plugins list
  *
- * @since 1.0.0
+ * @since 1.2.7
  */
 function dvt_plugin_row_meta( $links, $file ) {
 	if ( strpos( $file, 'dev-tasks-up.php' ) !== false ) {
 		$new_links = array(
-				'donate' 	=> '<a href="https://revolut.me/mvalchev" target="_blank">Donate</a>',
+				'donate' 	=> '<a href="https://linktr.ee/martinvalchev" target="_blank">Donate</a>',
 				'hireme' 	=> '<a href="https://martinvalchev.com/#contact" target="_blank">Hire Me For A Project</a>',
 				);
 		$links = array_merge( $links, $new_links );
@@ -72,7 +72,7 @@ add_filter( 'plugin_row_meta', 'dvt_plugin_row_meta', 10, 2 );
  * A function to add footer text to the settings page of the plugin. Footer text contains plugin rating and donation links.
  * Note: Remove the rating link if the plugin doesn't have a WordPress.org directory listing yet. (i.e. before initial approval)
  *
- * @since 1.1.3
+ * @since 1.2.7
  * @refer https://codex.wordpress.org/Function_Reference/get_current_screen
  */
 function dvt_footer_text($default) {
@@ -84,7 +84,7 @@ function dvt_footer_text($default) {
 	}
 
     $dvt_footer_text = sprintf( __( 'If you like this plugin, please <a href="%s" target="_blank">make a donation</a> or leave me a <a href="%s" target="_blank">&#9733;&#9733;&#9733;&#9733;&#9733;</a> rating to support continued development. Thanks a bunch!', 'dev-tasks-up' ),
-        esc_url('https://revolut.me/mvalchev'),
+        esc_url('https://linktr.ee/martinvalchev'),
         esc_url('https://wordpress.org/support/plugin/devtasksup/reviews/?rate=5#new-post')
 	);
 
