@@ -3,9 +3,9 @@ Contributors: martinvalchev
 Donate link: https://linktr.ee/martinvalchev
 Tags: ClickUp, integration, admin, task management, clients
 Requires at least: 5.3
-Tested up to: 6.7
+Tested up to: 6.7.2
 Requires PHP: 7.4
-Stable tag: 1.2.7
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,6 +25,7 @@ The options for this plugin include:
 *   Viewing the most important aspect of a task
 *   Customization by developers for their clients
 *   Direct task delegation from the client to the developer.
+*   Multiple workspace support with real-time switching
 
 The helper libraries plugin uses the following:
 
@@ -39,6 +40,8 @@ Notes:
 *   In order for the plugin to work correctly, it must be configured from an admin account
 *   The corresponding Api key must be filled in, upon successful connection, it is mandatory to choose whether you want to configure it in a new environment or in a current one
 *   If you want to use custom fields, they must be configured from Click Up, if they are configured, the field option will be displayed when you create a task
+*   You can now select and switch between multiple workspaces in real-time
+*   The plugin automatically resets configuration when switching workspaces to prevent conflicts
 
 == Installation ==
 
@@ -73,6 +76,8 @@ Yes, it supports 13 types of fields:
 *  Label Custom Field
 *  Attachment Custom Field
 *  Checkbox Custom Field
+= Can I use multiple workspaces? =
+Yes, you can select and switch between multiple workspaces in real-time.
 
 == Screenshots ==
 
@@ -82,6 +87,24 @@ Yes, it supports 13 types of fields:
 4. Create Task - custom fields
 
 == Changelog ==
+
+= 1.3.0 =
+* **Added:** Multiple workspace support with real-time switching
+* **Added:** Ability to select different workspaces and automatically reset configuration
+* **Added:** Real-time space loading when switching workspaces
+* **Added:** Automatic migration from previous versions
+* **Added:** Mutual exclusion between workspace creation and selection options
+* **Added:** Auto-refresh of workspaces list when loading settings page
+* **Improvement:** Better API integration with ClickUp workspaces
+* **Improvement:** Enhanced user experience when configuring workspaces
+* **Improvement:** Improved settings page UI - only shows API token field when token is invalid
+* **Improvement:** Added validation for API token field with visual feedback
+* **Improvement:** Responsive workspace selector with Bootstrap button styling
+* **Fix:** Fixed issue with empty List ID causing API errors
+* **Fix:** Improved error handling for API requests
+* **Fix:** Workspaces created in ClickUp now appear automatically when refreshing the settings page
+* Tested with WordPress 6.7.2
+**Release date: March 10, 2025**
 
 = 1.2.7 =
 * **Added:** New donate link
@@ -150,6 +173,11 @@ Yes, it supports 13 types of fields:
 
 
 == Upgrade Notice ==
+
+= 1.3.0 =
+* Added multiple workspace support with real-time switching and automatic configuration reset when changing workspaces.
+* Automatic migration from previous versions - your existing settings will be preserved and enhanced with workspace selection.
+
 
 = 1.2.0 =
 * Add Support 13 types custom fields for Click Up, when creating task (URL Custom Field, Dropdown Custom Field, Email Custom Field, Phone Custom Field, Date Custom Field, Short Text Custom Field, Long Text Custom Field, Number Custom Field, Money Custom Field, Emoji (Rating) Custom Field, Label Custom Field, Attachment Custom Field, Checkbox Custom Field )

@@ -326,11 +326,6 @@ em {
     width: 100%;
 }
 
-.banner-wrapper-taskpage, .banner-wrapper-taskpage-mobile {
-    text-align: center;
-    margin: 10px 0;
-}
-
 .banner-wrapper-taskpage-mobile {
     display: none;
 }
@@ -499,12 +494,187 @@ label.dvt-cf-star.unselected {
 }
 
 
+/* Workspace selector styles - Bootstrap button style */
+.workspace-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    width: 100%; /* Ensure full width */
+}
 
-@media screen and (max-width: 480px) {
-    .banner-wrapper-taskpage {
-       display: none;
+/* Make workspace items equal width and responsive */
+.workspace-selector .workspace-item {
+    flex: 1 1 150px; /* Changed to 1 1 for better distribution */
+    min-width: 120px; /* Smaller minimum width for better responsiveness */
+    max-width: 250px; /* Maximum width to prevent too wide buttons */
+}
+
+/* Hide radio buttons */
+.workspace-selector .workspace-radio {
+    display: none;
+}
+
+/* Style labels as Bootstrap buttons */
+.workspace-selector .workspace-label {
+    display: block; /* Changed to block for full width */
+    width: 100%; /* Full width of parent */
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    background-color: #e2e6ea;
+    color: #212529;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Add ellipsis for long text */
+}
+
+/* Style for selected workspace - primary button */
+.workspace-selector .workspace-radio:checked + .workspace-label {
+    color: #fff;
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+/* Hover effect for unselected workspaces */
+.workspace-selector .workspace-label:hover {
+    background-color: #ced4da; /* Slightly darker on hover */
+    border-color: #bdc3c7;
+}
+
+/* Hover effect for selected workspace */
+.workspace-selector .workspace-radio:checked + .workspace-label:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+}
+
+/* Responsive adjustments for small screens */
+@media (max-width: 768px) {
+    .workspace-selector .workspace-item {
+        flex: 1 1 100%; /* Full width on small screens */
+        max-width: 100%;
     }
-    .banner-wrapper-taskpage-mobile {
-        display: block;
-    }
+}
+
+/* Remove border and shadow from workspace selector card */
+.card.workspace-card {
+    border: none;
+    box-shadow: none;
+    padding: 15px 0;
+}
+
+.form-floating-api {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.form-floating-api input {
+    width: 100%;
+    padding: 1rem 0.75rem;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    font-size: 16px;
+    height: calc(3.5rem + 2px);
+    line-height: 1.25;
+}
+
+.form-floating-api label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    padding: 1rem 0.75rem;
+    pointer-events: none;
+    border: 1px solid transparent;
+    transform-origin: 0 0;
+    transition: opacity .1s ease-in-out,transform .1s ease-in-out;
+    color: #646970;
+}
+
+.form-floating-api input:focus,
+.form-floating-api input:not(:placeholder-shown) {
+    padding-top: 1.625rem;
+    padding-bottom: 0.625rem;
+}
+
+.form-floating-api input:focus ~ label,
+.form-floating-api input:not(:placeholder-shown) ~ label {
+    opacity: .65;
+    transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+}
+
+.form-floating-api .invalid-feedback {
+    display: none;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.875em;
+    color: #dc3545;
+}
+
+.form-floating-api input:invalid ~ .invalid-feedback,
+.form-floating-api.was-validated input:invalid ~ .invalid-feedback {
+    display: block;
+}
+
+.form-floating-api .invalid-feedback {
+    display: none !important;
+}
+
+.was-validated .form-floating-api input:invalid ~ .invalid-feedback {
+    display: block !important;
+}
+
+.form-floating-api input.is-invalid ~ .invalid-feedback {
+    display: block !important;
+}
+
+.form-floating {
+    position: relative;
+}
+
+.form-floating input {
+    height: calc(3.5rem + 2px);
+    padding: 1rem 0.75rem;
+}
+
+.form-floating label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    padding: 1rem 0.75rem;
+    pointer-events: none;
+    border: 1px solid transparent;
+    transform-origin: 0 0;
+    transition: opacity .1s ease-in-out,transform .1s ease-in-out;
+    color: #646970;
+}
+
+.form-floating input:focus,
+.form-floating input:not(:placeholder-shown) {
+    padding-top: 1.625rem;
+    padding-bottom: 0.625rem;
+}
+
+.form-floating input:focus ~ label,
+.form-floating input:not(:placeholder-shown) ~ label {
+    opacity: .65;
+    transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+}
+
+/* Style for refresh workspaces button */
+.refresh-workspaces {
+    display: none;
+}
+
+.refresh-workspaces:hover {
+    display: none;
 }

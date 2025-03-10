@@ -399,13 +399,24 @@ class TaskCenter
     /**
      * Get Members for current list
      *
-     * @since 1.0.1
+     * @since 1.3.0
      */
     public function GetMembersCurrentList() {
 
         $data = $this->getMainOption('devt-connect-data');
+        
+        // Check if List_ID exists and is not empty
+        $list_id = $this->getOption('List_ID');
+        if (empty($list_id)) {
+            // List ID is empty, don't make the API call
+            if (is_object($data)) {
+                $data->List_members = '';
+                update_option('devt-connect-data', json_encode($data));
+            }
+            return;
+        }
 
-        $url = "https://api.clickup.com/api/v2/list/".$this->getOption('List_ID')."/member";
+        $url = "https://api.clickup.com/api/v2/list/".$list_id."/member";
         $headers = array(
             'Authorization' => base64_decode($this->getOption('API_token'))
         );
@@ -453,11 +464,18 @@ class TaskCenter
     /**
      * Get Accessible Custom Fields
      *
-     * @since 1.2.0
+     * @since 1.3.0
      */
     public function GetAccessibleCustomFields() {
 
-        $url = "https://api.clickup.com/api/v2/list/".$this->getOption('List_ID')."/field";
+        // Check if List_ID exists and is not empty
+        $list_id = $this->getOption('List_ID');
+        if (empty($list_id)) {
+            // List ID is empty, return empty array
+            return array();
+        }
+
+        $url = "https://api.clickup.com/api/v2/list/".$list_id."/field";
         $headers = array(
             'Authorization' => base64_decode($this->getOption('API_token')),
             'Content-Type' => 'application/json'

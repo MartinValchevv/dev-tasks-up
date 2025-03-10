@@ -163,9 +163,6 @@ $supported_custom_fields = array(
                             ?>
                         </form>
                     </div>
-                    <div class="banner-wrapper-taskpage">
-                        <a href="https://clickup.com?fp_ref=hma1f" target="_blank" style="outline:none;border:none;"><img class="img-fluid" src="https://d2gdx5nv84sdx2.cloudfront.net/uploads/s73xa6xt/marketing_asset/banner/4153/medium_rectangle_v3-1.png" alt="clickup" border="0"/></a>
-                    </div>
                 </div>
 
                 <div class="col-md-8">
@@ -182,11 +179,6 @@ $supported_custom_fields = array(
                         </div>
                     </div>
                 </div>
-
-                <div class="banner-wrapper-taskpage-mobile">
-                    <a href="https://clickup.com?fp_ref=hma1f" target="_blank" style="outline:none;border:none;"><img class="img-fluid" src="https://d2gdx5nv84sdx2.cloudfront.net/uploads/s73xa6xt/marketing_asset/banner/4153/medium_rectangle_v3-1.png" alt="clickup" border="0"/></a>
-                </div>
-
             </div>
         </div>
 
@@ -199,9 +191,6 @@ $supported_custom_fields = array(
                 <p class="card-text"><?php echo sprintf(__( 'You must set up the link to your ClickUp account from the page. If you don\'t have an account, you can create one %s. Only a user with administrator rights can make the settings', 'dev-tasks-up' ), '<a href="https://clickup.com?fp_ref=hma1f" target="_blank">' . esc_html(__('here', 'dev-tasks-up')) . '</a>') ?></p>
                 <a href="<?php echo esc_url(menu_page_url( 'dev-tasks-settings', false ))?>" class="btn btn-primary"><?php esc_html_e( 'Settings', 'dev-tasks-up' ) ?></a>
             </div>
-        </div>
-        <div style="text-align: center; margin: 20px 0;">
-            <a href="https://clickup.com?fp_ref=hma1f" target="_blank" style="outline:none;border:none;"><img class="img-fluid" src="https://d2gdx5nv84sdx2.cloudfront.net/uploads/s73xa6xt/marketing_asset/banner/4158/leaderboard_v2.png" alt="clickup" border="0"/></a>
         </div>
     <?php endif; ?>
 

@@ -1,7 +1,10 @@
 <?php
 if (!defined('ABSPATH')) exit;
 global $DevTasksIntegration;
+
+// Retrieve workspaces and teams on every page load
 $workspaces = unserialize($DevTasksIntegration->getOption('all_workspaces'));
+$teams = unserialize($DevTasksIntegration->getOption('all_teams'));
 ?>
 
 <div class="wrapper">
@@ -29,8 +32,17 @@ $workspaces = unserialize($DevTasksIntegration->getOption('all_workspaces'));
                 <?php endif; ?>
             </div>
             <div class="card-body">
+                <?php if ($DevTasksIntegration->getOption('API_token_validation') == 'invalid'): ?>
+                    <div class="form-floating-api">
+                        <input type="password" name="API_token" id="API_token" value="<?php echo esc_attr(base64_decode($DevTasksIntegration->getOption('API_token'))) ?>" class="form-control" placeholder=" " required>
+                        <label for="API_token"><?php esc_html_e('Personal API Token', 'dev-tasks-up'); ?></label>
+                        <div class="invalid-feedback">
+                            <?php esc_html_e('Please enter a valid API token to access all settings.', 'dev-tasks-up'); ?>
+                        </div>
+                    </div>
+                <?php else: ?>
                     <div class="form-floating">
-                        <input type="password" name="API_token" id="API_token" value="<?php echo esc_attr(base64_decode($DevTasksIntegration->getOption('API_token'))) ?>" class="form-control" placeholder="<?php esc_html_e('Personal API Token', 'dev-tasks-up'); ?>" >
+                        <input type="password" name="API_token" id="API_token" value="<?php echo esc_attr(base64_decode($DevTasksIntegration->getOption('API_token'))) ?>" class="form-control" placeholder=" ">
                         <label for="API_token"><?php esc_html_e('Personal API Token', 'dev-tasks-up'); ?></label>
                     </div>
                     <div class="form-floating" style="margin-top: 20px;">
@@ -63,54 +75,81 @@ $workspaces = unserialize($DevTasksIntegration->getOption('all_workspaces'));
                             <label for="redirect_URL"><?php esc_html_e('Redirect URL(s)', 'dev-tasks-up'); ?></label>
                         </div>
                     <?php endif; ?>
-                    <?php if ($DevTasksIntegration->getOption('API_token_validation') == 'valid'): ?>
-                        <div style="clear: both; height: 30px;"></div>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" value="<?php echo esc_attr($DevTasksIntegration->getOption('flexSwitchCheckDefault_createWorkspace')) ?>" name="flexSwitchCheckDefault_createWorkspace" id="flexSwitchCheckDefault_createWorkspace" <?php echo ($DevTasksIntegration->getOption('flexSwitchCheckDefault_createWorkspace') == 'Yes')? 'checked' : ''; ?> <?php echo ($DevTasksIntegration->getOption('workspace_created'))? 'disabled' : ''; ?>>
-                            <label class="form-check-label" for="flexSwitchCheckDefault_createWorkspace"><?php esc_html_e('Create a new working environment (automatically creates a folder with the client\'s domain in the new working environment, in the folder it creates a new list with the title Clients)', 'dev-tasks-up'); ?></label>
-                            <div class="card" id="createWorkspace-info" style="min-width: 100%; display: none;">
-                                <div class="col-md-12">
-                                    <label for="validationWorkspace-name" class="form-label"><?php esc_html_e('Choose a Workspace name', 'dev-tasks-up'); ?></label>
-                                    <input type="text" class="form-control" name="validationWorkspace-name" id="validationWorkspace-name">
-                                    <div class="invalid-feedback">
-                                        <?php esc_html_e('This field is required', 'dev-tasks-up'); ?>
-                                    </div>
+                    
+                    <?php if (!empty($teams)) : ?>
+                    <div class="card workspace-card" style="min-width: 100%;">
+                        <h6><?php esc_html_e('Select a Workspace', 'dev-tasks-up'); ?></h6>
+                        
+                        <div class="workspace-selector">
+                            <?php 
+                            $active_workspace_id = $DevTasksIntegration->getOption('active_workspace_id');
+                            foreach ($teams as $team): 
+                            ?>
+                                <div class="workspace-item">
+                                    <input type="radio" 
+                                           id="workspace_<?php echo esc_attr($team['id']); ?>" 
+                                           name="workspace_selector" 
+                                           class="workspace-radio" 
+                                           value="<?php echo esc_attr($team['id']); ?>" 
+                                           data-name="<?php echo esc_attr($team['name']); ?>"
+                                           <?php echo ($active_workspace_id == $team['id']) ? 'checked' : ''; ?>>
+                                    <label for="workspace_<?php echo esc_attr($team['id']); ?>" class="workspace-label">
+                                        <?php echo esc_html($team['name']); ?>
+                                    </label>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                    <?php endif; ?>
+                    
+                    <div style="clear: both; height: 30px;"></div>
+
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" value="<?php echo esc_attr($DevTasksIntegration->getOption('flexSwitchCheckDefault_createWorkspace')) ?>" name="flexSwitchCheckDefault_createWorkspace" id="flexSwitchCheckDefault_createWorkspace" <?php echo ($DevTasksIntegration->getOption('flexSwitchCheckDefault_createWorkspace') == 'Yes')? 'checked' : ''; ?> <?php echo ($DevTasksIntegration->getOption('workspace_created') || $DevTasksIntegration->getOption('choose_list') == 'Yes')? 'disabled' : ''; ?> data-workspace-created="<?php echo ($DevTasksIntegration->getOption('workspace_created')) ? 'true' : 'false'; ?>">
+                        <label class="form-check-label" for="flexSwitchCheckDefault_createWorkspace"><?php esc_html_e('Create a new working environment (automatically creates a folder with the client\'s domain in the new working environment, in the folder it creates a new list with the title Clients)', 'dev-tasks-up'); ?></label>
+                        <div class="card" id="createWorkspace-info" style="min-width: 100%; display: none;">
+                            <div class="col-md-12">
+                                <label for="validationWorkspace-name" class="form-label"><?php esc_html_e('Choose a Space name', 'dev-tasks-up'); ?></label>
+                                <input type="text" class="form-control" name="validationWorkspace-name" id="validationWorkspace-name">
+                                <div class="invalid-feedback">
+                                    <?php esc_html_e('This field is required', 'dev-tasks-up'); ?>
                                 </div>
                             </div>
                         </div>
-                        <?php if ($DevTasksIntegration->getOption('flexSwitchCheckDefault_createWorkspace') == 'Yes'): ?>
-                            <div class="card border-primary mb-3 path_settings" style="max-width: auto; padding: 0; margin-left: 2.5rem;">
-                                <div class="card-header"><?php esc_html_e('An application has been set up to run in the following path', 'dev-tasks-up'); ?></div>
-                                <div class="card-body text-primary">
-                                    <p class="card-text" style="font-size: inherit;">
-                                        <span class="badge rounded-pill bg-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php esc_html_e('Workspace', 'dev-tasks-up'); ?>"><?php echo esc_html($DevTasksIntegration->getOption('show_workspace_name')) ?></span> /
-                                        <?php if ($DevTasksIntegration->getOption('show_folder_name')): ?>
-                                            <span class="badge rounded-pill bg-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php esc_html_e('Folder', 'dev-tasks-up'); ?>"><?php echo esc_html($DevTasksIntegration->getOption('show_folder_name')) ?></span> /
-                                        <?php endif; ?>
-                                        <span class="badge rounded-pill bg-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php esc_html_e('List', 'dev-tasks-up'); ?>"><?php echo esc_html($DevTasksIntegration->getOption('show_list_name')) ?></span>
-                                        <button style="float: right" type="button" class="btn btn-outline-danger" onclick="return removeSettings();"><i class="far fa-trash-alt"></i></button>
-                                    </p>
-                                </div>
+                    </div>
+                    <?php if ($DevTasksIntegration->getOption('flexSwitchCheckDefault_createWorkspace') == 'Yes'): ?>
+                        <div class="card border-primary mb-3 path_settings" style="max-width: auto; padding: 0; margin-left: 2.5rem;">
+                            <div class="card-header"><?php esc_html_e('An application has been set up to run in the following path', 'dev-tasks-up'); ?></div>
+                            <div class="card-body text-primary">
+                                <p class="card-text" style="font-size: inherit;">
+                                    <span class="badge rounded-pill bg-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php esc_html_e('Workspace', 'dev-tasks-up'); ?>"><?php echo esc_html($DevTasksIntegration->getOption('show_workspace_name')) ?></span> /
+                                    <?php if ($DevTasksIntegration->getOption('show_folder_name')): ?>
+                                        <span class="badge rounded-pill bg-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php esc_html_e('Folder', 'dev-tasks-up'); ?>"><?php echo esc_html($DevTasksIntegration->getOption('show_folder_name')) ?></span> /
+                                    <?php endif; ?>
+                                    <span class="badge rounded-pill bg-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php esc_html_e('List', 'dev-tasks-up'); ?>"><?php echo esc_html($DevTasksIntegration->getOption('show_list_name')) ?></span>
+                                    <button style="float: right" type="button" class="btn btn-outline-danger" onclick="return removeSettings();"><i class="far fa-trash-alt"></i></button>
+                                </p>
                             </div>
-                        <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
 
-                        <div style="clear: both; height: 30px;"></div>
+                    <div style="clear: both; height: 30px;"></div>
 
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" value="<?php echo esc_attr($DevTasksIntegration->getOption('choose_list')) ?>" name="choose_list" id="choose_list" <?php echo ($DevTasksIntegration->getOption('choose_list') == 'Yes')? 'checked' : ''; ?> <?php echo ($DevTasksIntegration->getOption('workspace_created'))? 'disabled' : ''; ?>>
-                            <label class="form-check-label" for="choose_list"><?php esc_html_e('Choose an existing Workspace (choose a sheet in which the client will be able to create tasks and see the progress of the tasks)', 'dev-tasks-up'); ?></label>
-                            <div class="card" id="choose-workspace" style="min-width: 100%; display: none;">
-                                <!--Loader-->
-                                <div class="loader-overlay">
-                                    <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
-                                </div>
-                                <!--END Loader-->
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <label class="form-check-label" for="select-workspace"><?php esc_html_e('Select a workspace to attach tasks to', 'dev-tasks-up'); ?></label>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" value="<?php echo esc_attr($DevTasksIntegration->getOption('choose_list')) ?>" name="choose_list" id="choose_list" <?php echo ($DevTasksIntegration->getOption('choose_list') == 'Yes')? 'checked' : ''; ?> <?php echo ($DevTasksIntegration->getOption('workspace_created') || $DevTasksIntegration->getOption('flexSwitchCheckDefault_createWorkspace') == 'Yes')? 'disabled' : ''; ?> data-workspace-created="<?php echo ($DevTasksIntegration->getOption('workspace_created')) ? 'true' : 'false'; ?>">
+                        <label class="form-check-label" for="choose_list"><?php esc_html_e('Choose an existing Space (choose a sheet in which the client will be able to create tasks and see the progress of the tasks)', 'dev-tasks-up'); ?></label>
+                        <div class="card" id="choose-workspace" style="min-width: 100%; display: none;">
+                            <!--Loader-->
+                            <div class="loader-overlay">
+                                <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                            </div>
+                            <!--END Loader-->
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="form-check-label" for="select-workspace"><?php esc_html_e('Select a space to attach tasks to', 'dev-tasks-up'); ?></label>
                                             <select id="select-workspace" name="select-workspace" class="form-select" size="6" aria-label="size 6 select example">
-                                                <option disabled value=""><?php esc_html_e('Choose a Workspace', 'dev-tasks-up'); ?></option>
+                                                <option disabled value=""><?php esc_html_e('Choose a Space', 'dev-tasks-up'); ?></option>
                                                 <?php if (!empty($workspaces)) : ?>
                                                     <?php foreach ($workspaces as $ws ) : ?>
                                                         <option value="<?php echo esc_attr($ws['id']) ?>"><?php echo esc_html($ws['name']) ?></option>
@@ -120,29 +159,29 @@ $workspaces = unserialize($DevTasksIntegration->getOption('all_workspaces'));
                                             <div class="invalid-feedback">
                                                 <?php esc_html_e('This field is required', 'dev-tasks-up'); ?>
                                             </div>
-                                        </div>
-                                        <div class="col-md-4" id="folders-list"></div>
-                                        <div class="col-md-4" id="only-list"></div>
                                     </div>
+                                    <div class="col-md-4" id="folders-list"></div>
+                                    <div class="col-md-4" id="only-list"></div>
                                 </div>
                             </div>
                         </div>
-                        <?php if ($DevTasksIntegration->getOption('choose_list') == 'Yes'): ?>
-                            <div class="card border-primary mb-3 path_settings" style="max-width: auto; padding: 0; margin-left: 2.5rem;">
-                                <div class="card-header"><?php esc_html_e('An application has been set up to run in the following path', 'dev-tasks-up'); ?></div>
-                                <div class="card-body text-primary">
-                                    <p class="card-text" style="font-size: inherit;">
-                                        <span class="badge rounded-pill bg-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php esc_html_e('Workspace', 'dev-tasks-up'); ?>"><?php echo esc_html($DevTasksIntegration->getOption('show_workspace_name')) ?></span> /
-                                        <?php if ($DevTasksIntegration->getOption('show_folder_name')): ?>
-                                        <span class="badge rounded-pill bg-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php esc_html_e('Folder', 'dev-tasks-up'); ?>"><?php echo esc_html($DevTasksIntegration->getOption('show_folder_name')) ?></span> /
-                                        <?php endif; ?>
-                                        <span class="badge rounded-pill bg-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php esc_html_e('List', 'dev-tasks-up'); ?>"><?php echo esc_html($DevTasksIntegration->getOption('show_list_name')) ?></span>
-                                        <button style="float: right" type="button" class="btn btn-outline-danger" onclick="return removeSettings();"><i class="far fa-trash-alt"></i></button>
-                                    </p>
-                                </div>
+                    </div>
+                    <?php if ($DevTasksIntegration->getOption('choose_list') == 'Yes'): ?>
+                        <div class="card border-primary mb-3 path_settings" style="max-width: auto; padding: 0; margin-left: 2.5rem;">
+                            <div class="card-header"><?php esc_html_e('An application has been set up to run in the following path', 'dev-tasks-up'); ?></div>
+                            <div class="card-body text-primary">
+                                <p class="card-text" style="font-size: inherit;">
+                                    <span class="badge rounded-pill bg-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php esc_html_e('Workspace', 'dev-tasks-up'); ?>"><?php echo esc_html($DevTasksIntegration->getOption('show_workspace_name')) ?></span> /
+                                    <?php if ($DevTasksIntegration->getOption('show_folder_name')): ?>
+                                    <span class="badge rounded-pill bg-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php esc_html_e('Folder', 'dev-tasks-up'); ?>"><?php echo esc_html($DevTasksIntegration->getOption('show_folder_name')) ?></span> /
+                                    <?php endif; ?>
+                                    <span class="badge rounded-pill bg-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php esc_html_e('List', 'dev-tasks-up'); ?>"><?php echo esc_html($DevTasksIntegration->getOption('show_list_name')) ?></span>
+                                    <button style="float: right" type="button" class="btn btn-outline-danger" onclick="return removeSettings();"><i class="far fa-trash-alt"></i></button>
+                                </p>
                             </div>
-                        <?php endif; ?>
+                        </div>
                     <?php endif; ?>
+                <?php endif; ?>
                 <?php
                 wp_nonce_field('connect-save', 'connect-message');
                 submit_button( __( 'Save Changes', 'dev-tasks-up' ), 'btn btn-primary' );
@@ -150,9 +189,6 @@ $workspaces = unserialize($DevTasksIntegration->getOption('all_workspaces'));
             </div>
         </div>
     </form>
-</div>
-<div style="text-align: center; margin: 20px 0;">
-    <a href="https://clickup.com?fp_ref=hma1f" target="_blank" style="outline:none;border:none;"><img class="img-fluid" src="https://d2gdx5nv84sdx2.cloudfront.net/uploads/s73xa6xt/marketing_asset/banner/4158/leaderboard_v2.png" alt="clickup" border="0"/></a>
 </div>
 
 <script>

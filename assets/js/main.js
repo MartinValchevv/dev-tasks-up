@@ -1,6 +1,114 @@
 jQuery( document ).ready(function($) {
     $.noConflict();
 
+    /** @since 1.3.0 Change event for workspace selector */
+    $('.workspace-radio').on('change', function() {
+        const workspaceId = $(this).val();
+        const workspaceName = $(this).data('name');
+        
+        // Show loading indicator
+        Swal.fire({
+            title: translate_obj.updating || 'Updating...',
+            text: translate_obj.changing_workspace || 'Changing active workspace',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        
+        // Send AJAX request to change active workspace and reset existing configuration
+        $.ajax({
+            method: 'POST',
+            url: ajaxurl,
+            dataType: 'json',
+            data: {
+                action: 'select_active_workspace',
+                workspace_id: workspaceId,
+                workspace_name: workspaceName,
+                reset_config: true // Add flag to reset configuration
+            }
+        }).done(function(response) {
+            if (response.success) {
+                // Update spaces list for selected workspace
+                $.ajax({
+                    method: 'POST',
+                    url: ajaxurl,
+                    dataType: 'html',
+                    data: {
+                        action: 'get_spaces_for_workspace',
+                        workspace_id: workspaceId
+                    },
+                    beforeSend: function() {
+                        $('.loader-overlay').show();
+                    },
+                    complete: function() {
+                        $('.loader-overlay').hide();
+                        Swal.close();
+                    }
+                }).done(function(spacesHtml) {
+                    // Update spaces list
+                    $('#select-workspace').html(spacesHtml);
+                    
+                    // Clear folders and lists
+                    $('#folders-list').empty();
+                    $('#only-list').empty();
+                    
+                    // Hide path_settings if visible
+                    $('.path_settings').hide();
+                    
+                    // Uncheck checkboxes
+                    $('#flexSwitchCheckDefault_createWorkspace').prop('checked', false).val('No');
+                    $('#choose_list').prop('checked', false).val('No');
+                    
+                    // Remove disabled attribute from checkboxes
+                    $('#flexSwitchCheckDefault_createWorkspace').prop('disabled', false);
+                    $('#choose_list').prop('disabled', false);
+                    
+                    // Update data-workspace-created attribute
+                    $('#flexSwitchCheckDefault_createWorkspace').attr('data-workspace-created', 'false');
+                    $('#choose_list').attr('data-workspace-created', 'false');
+                    
+                    // Hide fields for creating new environment and choosing existing
+                    $('#createWorkspace-info').hide();
+                    $('#choose-workspace').hide();
+                    
+                    // Remove required attributes
+                    $('#validationWorkspace-name').removeAttr('required');
+                    $('#select-workspace').removeAttr('required');
+                    
+                    // Show success message
+                    Swal.fire({
+                        icon: 'success',
+                        title: translate_obj.success || 'Success!',
+                        text: response.config_reset 
+                            ? (translate_obj.config_reset || 'Configuration has been reset for the new workspace') 
+                            : (translate_obj.workspace_changed || 'Workspace changed successfully'),
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                }).fail(function() {
+                    Swal.fire({
+                        icon: 'error',
+                        title: translate_obj.error || 'Error',
+                        text: translate_obj.spaces_load_failed || 'Failed to load spaces for the selected workspace'
+                    });
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: translate_obj.error || 'Error',
+                    text: translate_obj.workspace_change_failed || 'Failed to change workspace'
+                });
+            }
+        }).fail(function() {
+            Swal.fire({
+                icon: 'error',
+                title: translate_obj.error || 'Error',
+                text: translate_obj.workspace_change_failed || 'Failed to change workspace'
+            });
+        });
+    });
+
     /** @since 1.0.0 change event create_workspace  */
     $('#flexSwitchCheckDefault_createWorkspace').on('change', function () {
         if ($(this).is(':checked')) {
@@ -469,6 +577,75 @@ jQuery( document ).ready(function($) {
 
     } //END Check plugin page position for load scripts
 
+    /** @since 1.3.0 Form Validation */
+    // JavaScript for disabling form submissions if there are invalid fields
+    (function () {
+        'use strict'
+
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+
+        var forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+
+    /** @since 1.3.0 API Token validation */
+    $('#API_token').on('input', function() {
+        $(this).removeClass('is-invalid');
+    });
+
+    $('form.needs-validation').on('submit', function(event) {
+        var apiToken = $('#API_token');
+        
+        if (apiToken.prop('required') && apiToken.val().trim() === '') {
+            apiToken.addClass('is-invalid');
+            event.preventDefault();
+            event.stopPropagation();
+        } else {
+            apiToken.removeClass('is-invalid');
+        }
+    });
+
+    // Mutual exclusion of options for creating a new workspace and choosing an existing one
+    jQuery(document).ready(function($) {
+        // Handler for changing the option to create a new workspace
+        $('#flexSwitchCheckDefault_createWorkspace').on('change', function() {
+            if ($(this).is(':checked')) {
+                $('#choose_list').prop('disabled', true);
+            } else {
+                // Check if workspace_created is true, if not, enable choose_list
+                if ($('#choose_list').data('workspace-created') !== 'true') {
+                    $('#choose_list').prop('disabled', false);
+                }
+            }
+        });
+
+        // Handler for changing the option to choose an existing workspace
+        $('#choose_list').on('change', function() {
+            if ($(this).is(':checked')) {
+                $('#flexSwitchCheckDefault_createWorkspace').prop('disabled', true);
+            } else {
+                // Check if workspace_created is true, if not, enable flexSwitchCheckDefault_createWorkspace
+                if ($('#flexSwitchCheckDefault_createWorkspace').data('workspace-created') !== 'true') {
+                    $('#flexSwitchCheckDefault_createWorkspace').prop('disabled', false);
+                }
+            }
+        });
+    });
 
 });
 
