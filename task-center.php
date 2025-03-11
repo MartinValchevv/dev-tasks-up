@@ -36,14 +36,22 @@ class TaskCenter
     }
 
     /**
-     * Get all List data
+     * Get List Data
      *
-     * @since 1.0.0
+     * @since 1.3.1
      */
     public function GetListData()
     {
-
+        // Check if API token is valid and List_ID exists and is not empty
+        $api_token_validation = $this->getOption('API_token_validation');
         $listId = $this->getOption('List_ID');
+        
+        // Don't make the API call if API token is invalid or List_ID is empty
+        if ($api_token_validation !== 'valid' || empty($listId)) {
+            // API token is invalid or List ID is empty, return error
+            echo json_encode(array('error' => 'Invalid API token or List ID'));
+            wp_die();
+        }
 
         $headers = array(
             'Authorization' => base64_decode($this->getOption('API_token')),
@@ -70,12 +78,24 @@ class TaskCenter
     /**
      * Get all task comments
      *
-     * @since 1.0.0
+     * @since 1.3.1
      */
     public function getTaskComments()
     {
+        // Check if API token is valid
+        $api_token_validation = $this->getOption('API_token_validation');
+        if ($api_token_validation !== 'valid') {
+            // API token is invalid, return error
+            echo json_encode(array('error' => 'Invalid API token'));
+            wp_die();
+        }
 
         $task_id = sanitize_text_field($_POST['task_id']);
+        if (empty($task_id)) {
+            // Task ID is empty, return error
+            echo json_encode(array('error' => 'Invalid Task ID'));
+            wp_die();
+        }
 
         $query = array(
             "custom_task_ids" => "true",
@@ -105,11 +125,24 @@ class TaskCenter
     /**
      * Add comments in task
      *
-     * @since 1.1.0
+     * @since 1.3.1
      */
     public function addTaskComments()
     {
+        // Check if API token is valid
+        $api_token_validation = $this->getOption('API_token_validation');
+        if ($api_token_validation !== 'valid') {
+            // API token is invalid, return error
+            echo json_encode(array('error' => 'Invalid API token'));
+            wp_die();
+        }
+        
         $task_id = sanitize_text_field($_POST['task_id']);
+        if (empty($task_id)) {
+            // Task ID is empty, return error
+            echo json_encode(array('error' => 'Invalid Task ID'));
+            wp_die();
+        }
 
         $headers = array(
             'Authorization' => base64_decode($this->getOption('API_token')),
@@ -149,12 +182,20 @@ class TaskCenter
     /**
      * Get all tasks
      *
-     * @since 1.0.0
+     * @since 1.3.1
      */
     public function GetAllTasks()
     {
-
+        // Check if API token is valid and List_ID exists and is not empty
+        $api_token_validation = $this->getOption('API_token_validation');
         $listId = $this->getOption('List_ID');
+        
+        // Don't make the API call if API token is invalid or List_ID is empty
+        if ($api_token_validation !== 'valid' || empty($listId)) {
+            // API token is invalid or List ID is empty, return error
+            echo json_encode(array('error' => 'Invalid API token or List ID'));
+            wp_die();
+        }
 
         $query = array(
             "archived" => "false",
@@ -200,7 +241,7 @@ class TaskCenter
     /**
      * Save admin Task Center page
      *
-     * @since 1.2.5
+     * @since 1.3.1
      */
     public function saveFormCreateTask()
     {
@@ -208,6 +249,15 @@ class TaskCenter
         // First, validate the nonce and verify the user as permission to save.
         if (!($this->has_valid_nonce() && current_user_can('manage_options'))) {
             echo 'Not a valid nonce';
+            wp_die();
+        }
+        
+        // Check if API token is valid
+        $api_token_validation = $this->getOption('API_token_validation');
+        if ($api_token_validation !== 'valid') {
+            // API token is invalid, return error
+            echo json_encode(array('error' => 'Invalid API token'));
+            wp_die();
         }
 
 
@@ -399,16 +449,19 @@ class TaskCenter
     /**
      * Get Members for current list
      *
-     * @since 1.3.0
+     * @since 1.3.1
      */
     public function GetMembersCurrentList() {
 
         $data = $this->getMainOption('devt-connect-data');
         
-        // Check if List_ID exists and is not empty
+        // Check if API token is valid and List_ID exists and is not empty
+        $api_token_validation = $this->getOption('API_token_validation');
         $list_id = $this->getOption('List_ID');
-        if (empty($list_id)) {
-            // List ID is empty, don't make the API call
+        
+        // Don't make the API call if API token is invalid or List_ID is empty
+        if ($api_token_validation !== 'valid' || empty($list_id)) {
+            // Clear List_members if data is an object
             if (is_object($data)) {
                 $data->List_members = '';
                 update_option('devt-connect-data', json_encode($data));
@@ -423,6 +476,17 @@ class TaskCenter
         $response = wp_remote_get( $url, array(
             'headers' => $headers
         ));
+        
+        // Check if response is an error
+        if (is_wp_error($response) || wp_remote_retrieve_response_code($response) !== 200) {
+            // Clear List_members if data is an object
+            if (is_object($data)) {
+                $data->List_members = '';
+                update_option('devt-connect-data', json_encode($data));
+            }
+            return;
+        }
+        
         $json_response = json_decode(wp_remote_retrieve_body($response), true);
 
         $arrMembers = array();
@@ -464,14 +528,17 @@ class TaskCenter
     /**
      * Get Accessible Custom Fields
      *
-     * @since 1.3.0
+     * @since 1.3.1
      */
     public function GetAccessibleCustomFields() {
 
-        // Check if List_ID exists and is not empty
+        // Check if API token is valid and List_ID exists and is not empty
+        $api_token_validation = $this->getOption('API_token_validation');
         $list_id = $this->getOption('List_ID');
-        if (empty($list_id)) {
-            // List ID is empty, return empty array
+        
+        // Don't make the API call if API token is invalid or List_ID is empty
+        if ($api_token_validation !== 'valid' || empty($list_id)) {
+            // API token is invalid or List ID is empty, return empty array
             return array();
         }
 

@@ -5,7 +5,7 @@ Tags: ClickUp, integration, admin, task management, clients
 Requires at least: 5.3
 Tested up to: 6.7.2
 Requires PHP: 7.4
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -87,6 +87,16 @@ Yes, you can select and switch between multiple workspaces in real-time.
 4. Create Task - custom fields
 
 == Changelog ==
+
+= 1.3.1 =
+* **Fix:** Fixed issue with API errors after disconnecting from ClickUp
+* **Fix:** Improved error handling when workspace is deleted from ClickUp
+* **Added:** Automatic reset of configuration when API token is removed
+* **Added:** Automatic detection of deleted workspaces with fallback to first available workspace
+* **Improvement:** Better validation of API token and List ID before making API calls
+* **Improvement:** Enhanced error handling for all ClickUp API endpoints
+* **Improvement:** Added additional translations for workspace management
+**Release date: March 11, 2025**
 
 = 1.3.0 =
 * **Added:** Multiple workspace support with real-time switching

@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) exit;
  * Description: The plugin integrates ClickUp into the admin for streamlined task management. Simply add an API key for full access to create tasks, leave comments, and view task priority. Ideal for developers to set up for clients for seamless task delegation.
  * Author: Martin Valchev
  * Author URI: https://linktr.ee/martinvalchev
- * Version: 1.3.0
+ * Version: 1.3.1
  * Text Domain: dev-tasks-up
  * Domain Path: /languages
  * License: GPL v2 - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) exit;
  *
  * @since 1.1.1
  */
-if ( ! defined( 'DVT_VERSION_NUM' ) ) 		    define( 'DVT_VERSION_NUM'		, '1.3.0' ); // Plugin version constant
+if ( ! defined( 'DVT_VERSION_NUM' ) ) 		    define( 'DVT_VERSION_NUM'		, '1.3.1' ); // Plugin version constant
 if ( ! defined( 'DVT_STARTER_PLUGIN' ) )		define( 'DVT_STARTER_PLUGIN'		, trim( dirname( plugin_basename( __FILE__ ) ), '/' ) ); // Name of the plugin folder eg - 'dev-tasks-up'
 if ( ! defined( 'DVT_STARTER_PLUGIN_DIR' ) )	define( 'DVT_STARTER_PLUGIN_DIR'	, plugin_dir_path( __FILE__ ) ); // Plugin directory absolute path with the trailing slash. Useful for using with includes eg - /var/www/html/wp-content/plugins/dev-tasks-up/
 if ( ! defined( 'DVT_STARTER_PLUGIN_URL' ) )	define( 'DVT_STARTER_PLUGIN_URL'	, plugin_dir_url( __FILE__ ) ); // URL to the plugin folder with the trailing slash. Useful for referencing src eg - http://localhost/wp/wp-content/plugins/dev-tasks-up/
@@ -48,7 +48,7 @@ class DevTasksIntegration
     /**
      * Construct
      *
-     * @since 1.3.0
+     * @since 1.3.1
      */
     public function __construct()
     {
@@ -77,6 +77,9 @@ class DevTasksIntegration
         // add_action('wp_ajax_nopriv_dvt_send_deactivation_feedback_email',  array($this, 'dvt_send_deactivation_email'));
 
         // add_shortcode('dev-tasks-plugin', array($this, 'shortcodeAction'));
+        
+        // Check if the active workspace still exists in ClickUp
+        add_action('admin_init', array($this, 'check_workspace_exists'));
 
         // Check if we need to run migration
         add_action('plugins_loaded', array($this, 'check_version'));
@@ -148,36 +151,59 @@ class DevTasksIntegration
     /**
      * Admin styles
      *
-     * @since 1.3.0
+     * @since 1.3.1
      */
     public function dev_tasks_admin_styles($hook) {
 
-        wp_enqueue_style('bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css');
-        wp_enqueue_style('fontawesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
-        wp_enqueue_style('select2', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css');
-        wp_enqueue_style('sweetalert2', 'https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.min.css');
-        wp_enqueue_style('dev-tasks-admin-style', DVT_STARTER_PLUGIN_URL . 'assets/admin-style.css');
-
-        wp_enqueue_script('bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js', array('jquery'), '5.2.3', true);
-        wp_enqueue_script('select2', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js', array('jquery'), '4.1.0', true);
-        wp_enqueue_script('sweetalert2', 'https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js', array('jquery'), '11.4.8', true);
-        wp_enqueue_script('dev-tasks-admin-script', DVT_STARTER_PLUGIN_URL . 'assets/js/main.js', array('jquery'), '1.0.0', true);
-
-        wp_localize_script('dev-tasks-admin-script', 'translate_obj', array(
-            'are_you_sure' => __('Are you sure?', 'dev-tasks-up'),
-            'stop_the_connection' => __('You want to stop the connection with ClickUp?', 'dev-tasks-up'),
-            'Yes_disconnected' => __('Yes, disconnect!', 'dev-tasks-up'),
-            'cancel_text' => __('Cancel', 'dev-tasks-up'),
-            'changes_are_saved' => __('Your changes are saved!', 'dev-tasks-up'),
-            'updating' => __('Updating...', 'dev-tasks-up'),
-            'changing_workspace' => __('Changing active workspace', 'dev-tasks-up'),
-            'success' => __('Success!', 'dev-tasks-up'),
-            'error' => __('Error', 'dev-tasks-up'),
-            'config_reset' => __('Configuration has been reset for the new workspace', 'dev-tasks-up'),
-            'workspace_changed' => __('Workspace changed successfully', 'dev-tasks-up'),
-            'spaces_load_failed' => __('Failed to load spaces for the selected workspace', 'dev-tasks-up'),
-            'workspace_change_failed' => __('Failed to change workspace', 'dev-tasks-up'),
-        ));
+        $screen = get_current_screen();
+         
+         if( $screen->base == 'toplevel_page_dev-tasks-admin-page' ||  $screen->base == 'devtasksup_page_dev-tasks-settings') {
+            wp_enqueue_style( 'bootstrap_admin_styles', plugins_url( 'assets/bootstrap-5.2.1/css/bootstrap.min.css', __FILE__ ) );
+            wp_enqueue_style( 'dev_tasks_admin_fontawesome_styles', plugins_url( 'assets/fontawesome5/css/all.min.css', __FILE__ ) );
+            wp_enqueue_style( 'dev_tasks_admin_styles', plugins_url( 'assets/admin-style.css', __FILE__ ) );
+            wp_enqueue_style( 'select2', plugins_url( 'assets/select2/select2.min.css', __FILE__ ) );
+ 
+            wp_enqueue_script( 'bootstrap-admin-js', plugins_url( 'assets/bootstrap-5.2.1/js/bootstrap.bundle.min.js', __FILE__ ) );
+            wp_enqueue_script( 'sweetalert2-js', plugins_url( 'assets/sweetalert2/sweetalert2.all.min.js', __FILE__ ) );
+            wp_enqueue_script( 'momentjs', includes_url() . '/js/dist/vendor/moment.js', array(), '', true );
+            wp_enqueue_script( 'dev-tasks-js', plugins_url( 'assets/js/main.js', __FILE__ ), '', DVT_VERSION_NUM, true );
+            wp_register_script( 'select2', plugin_dir_url( __FILE__ ) . 'assets/select2/select2.min.js', array( 'jquery' ), '', true );
+            wp_enqueue_script( 'select2' );
+ 
+         }
+ 
+ //        if ($hook == "plugins.php") {
+ //            wp_enqueue_script( 'dvt-feedback', plugins_url( 'assets/js/feedback.js', __FILE__ ), '', DVT_VERSION_NUM );
+ //        }
+ 
+         $translation_array = array(
+             'current_url_plugin' => $screen->base,
+             'settings_valid' => $this->getOption('API_token_validation'),
+             'choose_list' => $this->getOption('choose_list'),
+             'flexSwitchCheckDefault_createWorkspace' => $this->getOption('flexSwitchCheckDefault_createWorkspace'),
+             'client_name_show_chat' => $this->getOption('client_name'),
+             'yes' => __( 'Yes, confirm', 'dev-tasks-up' ),
+             'are_you_sure' => __( 'Are you sure?', 'dev-tasks-up' ),
+             'stop_the_connection' => __( 'You want to stop the connection with ClickUp?', 'dev-tasks-up' ),
+             'Yes_disconnected' => __( 'Yes, disconnect!', 'dev-tasks-up' ),
+             'cancel_text' => __( 'Cancel', 'dev-tasks-up' ),
+             'changes_are_saved' => __( 'Your changes are saved!', 'dev-tasks-up' ),
+             'change_this_setting' => __( 'To change this setting', 'dev-tasks-up' ),
+             'comment' => __( 'Comment', 'dev-tasks-up' ),
+             'err_empty_comment' => __( 'To send a comment you must enter your comment in the field', 'dev-tasks-up' ),
+             'deactivating' => __( 'Deactivating...', 'dev-tasks-up' ),
+             'updating' => __( 'Updating...', 'dev-tasks-up' ),
+             'changing_workspace' => __( 'Changing active workspace', 'dev-tasks-up' ),
+             'success' => __( 'Success!', 'dev-tasks-up' ),
+             'error' => __( 'Error', 'dev-tasks-up' ),
+             'config_reset' => __( 'Configuration has been reset for the new workspace', 'dev-tasks-up' ),
+             'workspace_changed' => __( 'Workspace changed successfully', 'dev-tasks-up' ),
+             'spaces_load_failed' => __( 'Failed to load spaces for the selected workspace', 'dev-tasks-up' ),
+             'workspace_change_failed' => __( 'Failed to change workspace', 'dev-tasks-up' ),
+             'workspace_not_exists' => __( 'The previously selected ClickUp workspace no longer exists. Configuration has been reset to use the first available workspace.', 'dev-tasks-up' ),
+         );
+         wp_localize_script( 'dev-tasks-js', 'translate_obj', $translation_array );
+        //  wp_localize_script( 'dvt-feedback', 'translate_obj', $translation_array );
 
     }
 
@@ -200,7 +226,7 @@ class DevTasksIntegration
     /**
      * Save admin settings
      *
-     * @since 1.3.0
+     * @since 1.3.1
      */
     public function save()
     {
@@ -231,6 +257,30 @@ class DevTasksIntegration
                 // 'client_secret' => sanitize_text_field($_POST['client_secret']),
                 // 'redirect_URL' => sanitize_text_field($_POST['redirect_URL']),
             );
+            
+            // If API token is empty, clear all ClickUp related settings
+            if (empty($_POST['API_token'])) {
+                $data['API_token_validation'] = 'invalid';
+                $data['generalWorkspace_Id'] = '';
+                $data['active_workspace_id'] = '';
+                $data['active_workspace_name'] = '';
+                $data['active_space_id'] = '';
+                $data['active_space_name'] = '';
+                $data['Workspace_ID'] = '';
+                $data['show_workspace_name'] = '';
+                $data['Folder_ID'] = '';
+                $data['show_folder_name'] = '';
+                $data['List_ID'] = '';
+                $data['show_list_name'] = '';
+                $data['List_members'] = '';
+                $data['workspace_created'] = false;
+                $data['flexSwitchCheckDefault_createWorkspace'] = 'No';
+                $data['choose_list'] = 'No';
+                
+                update_option('devt-connect-data', json_encode($data));
+                $this->redirect();
+                return;
+            }
 
             // Save the selected workspace from the radio buttons if it is selected
             if (isset($_POST['workspace_selector'])) {
@@ -604,7 +654,7 @@ class DevTasksIntegration
     /**
      * Get all Workspaces
      *
-     * @since 1.3.0
+     * @since 1.3.1
      */
     public function getWorkspaces($data) {
 
@@ -660,12 +710,10 @@ class DevTasksIntegration
                         $spaces[$key]['id'] = $space['id'];
                         $spaces[$key]['name'] = $space['name'];
                     }
+                    
+                    $data['all_workspaces'] = maybe_serialize($spaces);
                 }
-                
-                $data['all_workspaces'] = maybe_serialize($spaces);
             }
-        } else {
-            $data['all_workspaces'] = maybe_serialize(array());
         }
         
         update_option('devt-connect-data', json_encode($data));
@@ -673,6 +721,76 @@ class DevTasksIntegration
         return $data;
     }
 
+    /**
+     * Check if the active workspace still exists in ClickUp
+     * If not, reset configuration to allow selecting a new workspace
+     *
+     * @since 1.3.1
+     * @return bool True if workspace exists, false if not
+     */
+    public function check_workspace_exists() {
+        // Only check if we have a valid API token and an active workspace
+        if ($this->getOption('API_token_validation') !== 'valid' || !$this->getOption('active_workspace_id')) {
+            return false;
+        }
+        
+        $args = array(
+            'method' => 'GET',
+            'headers' => array(
+                'Authorization' => base64_decode($this->getOption('API_token'))
+            ),
+        );
+        
+        // Fetch all teams (workspaces)
+        $response = wp_remote_get('https://api.clickup.com/api/v2/team', $args);
+        
+        if (is_wp_error($response)) {
+            return false;
+        }
+        
+        $json_response = json_decode($response['body'], true);
+        $active_workspace_id = $this->getOption('active_workspace_id');
+        $workspace_exists = false;
+        
+        // Check if the active workspace still exists
+        if (isset($json_response['teams']) && !empty($json_response['teams'])) {
+            foreach ($json_response['teams'] as $team) {
+                if ($team['id'] == $active_workspace_id) {
+                    $workspace_exists = true;
+                    break;
+                }
+            }
+            
+            // If workspace doesn't exist, reset configuration
+            if (!$workspace_exists) {
+                $data = json_decode(get_option('devt-connect-data'), true);
+                
+                // Reset workspace configuration
+                $data['active_workspace_id'] = $json_response['teams'][0]['id'];
+                $data['active_workspace_name'] = $json_response['teams'][0]['name'];
+                $data['Workspace_ID'] = '';
+                $data['show_workspace_name'] = '';
+                $data['Folder_ID'] = '';
+                $data['show_folder_name'] = '';
+                $data['List_ID'] = '';
+                $data['show_list_name'] = '';
+                $data['workspace_created'] = false;
+                $data['flexSwitchCheckDefault_createWorkspace'] = 'No';
+                $data['choose_list'] = 'No';
+                
+                update_option('devt-connect-data', json_encode($data));
+                
+                // Add admin notice
+                add_action('admin_notices', function() {
+                    echo '<div class="notice notice-warning is-dismissible"><p>' . 
+                         esc_html__('The previously selected ClickUp workspace no longer exists. Configuration has been reset to use the first available workspace.', 'dev-tasks-up') . 
+                         '</p></div>';
+                });
+            }
+        }
+        
+        return $workspace_exists;
+    }
 
     /**
      * AJAX select workspace and return folder for this workspace
