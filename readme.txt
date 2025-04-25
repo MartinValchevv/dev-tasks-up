@@ -3,7 +3,7 @@ Contributors: martinvalchev
 Donate link: https://linktr.ee/martinvalchev
 Tags: ClickUp, integration, admin, task management, clients
 Requires at least: 5.3
-Tested up to: 6.7.2
+Tested up to: 6.8
 Requires PHP: 7.4
 Stable tag: 1.3.1
 License: GPLv2 or later
